@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="ru" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Искусственный интеллект в повседневной жизни — проект 10 класса</title>
+<meta name="description" content="Индивидуальный проект по информатике: как искусственный интеллект работает в повседневной жизни. Теория, история, интерактивные демонстрации, анкетирование и выводы.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070a08; --fg:#dce7de; --card:#0d120f; --muted:#131a16; --mut:#8fa396;
+  --pri:#34d399; --pri2:#6ee7b7; --bor:rgba(52,211,153,.16); --bor2:rgba(52,211,153,.38);
+  --acc:#12201a; --rad:10px; --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 500px at 15% -10%,rgba(52,211,153,.07),transparent 60%),
+             radial-gradient(700px 420px at 90% 110%,rgba(52,211,153,.05),transparent 60%)}
+.mono{font-family:var(--mono)}
+.wrap{position:relative;z-index:1}
+.container{max-width:72rem;margin:0 auto;padding:0 1rem}
+@media(min-width:640px){.container{padding:0 1.5rem}}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(52,211,153,.3)}
+/* ---------- NAV ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(7,10,8,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--bor)}
+.nav-in{max-width:72rem;margin:0 auto;padding:0 1rem;height:58px;display:flex;align-items:center;gap:16px}
+.logo{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--pri);white-space:nowrap}
+.logo span{color:var(--fg)}
+.nav-links{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{font-family:var(--mono);font-size:.72rem;color:var(--mut);padding:7px 9px;border-radius:7px;white-space:nowrap;transition:.2s}
+.nav-links a:hover{color:var(--fg);background:var(--muted)}
+.nav-links a.on{color:var(--pri);background:var(--acc)}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--bor);color:var(--pri);border-radius:8px;padding:6px 10px;font-size:1rem;cursor:pointer}
+@media(max-width:900px){.nav-links{display:none;position:absolute;top:58px;left:0;right:0;flex-direction:column;background:rgba(7,10,8,.97);border-bottom:1px solid var(--bor);padding:10px}.nav-links.open{display:flex}.burger{display:block}}
+/* ---------- HERO ---------- */
+.hero{padding:120px 0 84px;position:relative}
+.kick{font-family:var(--mono);font-size:.8rem;color:var(--pri);letter-spacing:.08em}
+.kick .crt{display:inline-block;width:8px;height:15px;background:var(--pri);vertical-align:-2px;margin-left:6px;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:14px 0 6px;max-width:20ch}
+.hero h1 em{font-style:normal;color:var(--pri);text-shadow:0 0 34px rgba(52,211,153,.35)}
+.hero .sub{color:var(--mut);font-size:1.05rem;max-width:56ch;margin:16px 0 26px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+.chip{font-family:var(--mono);font-size:.72rem;color:var(--pri2);border:1px solid var(--bor);background:var(--card);padding:6px 12px;border-radius:99px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.82rem;font-weight:500;padding:12px 22px;border-radius:var(--rad);cursor:pointer;transition:.2s;border:1px solid transparent}
+.btn-p{background:var(--pri);color:#052015;font-weight:700}
+.btn-p:hover{background:var(--pri2);box-shadow:0 0 30px rgba(52,211,153,.35)}
+.btn-s{border-color:var(--bor2);color:var(--pri2)}
+.btn-s:hover{background:var(--acc)}
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:52px}
+.hstat{border:1px solid var(--bor);background:var(--card);border-radius:var(--rad);padding:16px 18px}
+.hstat b{display:block;font-family:var(--mono);font-size:1.5rem;color:var(--pri)}
+.hstat span{font-size:.78rem;color:var(--mut)}
+/* ---------- SECTIONS ---------- */
+section{padding:88px 0;scroll-margin-top:70px;border-top:1px solid rgba(52,211,153,.08)}
+@media(max-width:640px){section{padding:60px 0}.hero{padding:100px 0 60px}}
+.shead{margin-bottom:40px}
+.shead .idx{font-family:var(--mono);font-size:.78rem;color:var(--pri);letter-spacing:.14em}
+.shead h2{font-size:clamp(1.6rem,3.6vw,2.3rem);font-weight:800;letter-spacing:-.01em;margin-top:6px}
+.shead p{color:var(--mut);max-width:70ch;margin-top:10px;font-size:.95rem}
+/* cards */
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--bor);border-radius:var(--rad);padding:22px;transition:.25s}
+.card:hover{border-color:var(--bor2);transform:translateY(-2px);box-shadow:0 10px 34px rgba(0,0,0,.4)}
+.card h3{font-size:1.02rem;font-weight:700;margin-bottom:8px;color:var(--pri2)}
+.card p{font-size:.88rem;color:var(--mut)}
+.card ul{margin:8px 0 0 18px;font-size:.88rem;color:var(--mut)}
+.card li{margin-bottom:5px}
+.tag{font-family:var(--mono);font-size:.68rem;color:var(--pri);border:1px solid var(--bor);border-radius:6px;padding:2px 8px;display:inline-block;margin-bottom:12px}
+/* timeline */
+.tl{position:relative;margin-left:6px;padding-left:28px;border-left:1px solid var(--bor)}
+.tl-i{position:relative;padding-bottom:26px}
+.tl-i:last-child{padding-bottom:0}
+.tl-i::before{content:'';position:absolute;left:-33.5px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--pri);box-shadow:0 0 12px rgba(52,211,153,.5)}
+.tl-y{font-family:var(--mono);color:var(--pri);font-size:.85rem;font-weight:700}
+.tl-i h3{font-size:1rem;font-weight:700;margin:2px 0 4px}
+.tl-i p{font-size:.88rem;color:var(--mut);max-width:75ch}
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.pipe .st{background:var(--muted);border:1px solid var(--bor);border-radius:var(--rad);padding:16px;position:relative}
+.pipe .st b{font-family:var(--mono);color:var(--pri);font-size:.75rem;display:block;margin-bottom:6px}
+.pipe .st span{font-size:.82rem;color:var(--mut)}
+.formula{font-family:var(--mono);font-size:.8rem;color:var(--pri2);background:var(--acc);border:1px solid var(--bor);border-radius:var(--rad);padding:12px 16px;margin-top:16px;overflow-x:auto;white-space:nowrap}
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.rv.vis{opacity:1;transform:none}
+/* ---------- LAB ---------- */
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.panel{background:var(--card);border:1px solid var(--bor);border-radius:var(--rad);padding:24px}
+.panel h3{font-weight:700;font-size:1.1rem;margin-bottom:6px}
+.panel .pd{font-size:.86rem;color:var(--mut);margin-bottom:16px}
+#cv{width:100%;max-width:260px;aspect-ratio:1;background:#0a0f0c;border:1px solid var(--bor2);border-radius:var(--rad);cursor:crosshair;touch-action:none;display:block;margin:0 auto}
+.lab-row{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.lab-side{flex:1;min-width:200px}
+.pred{margin-bottom:10px}
+.pred .pl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.75rem;color:var(--mut);margin-bottom:3px}
+.pred .pb{height:8px;background:var(--muted);border-radius:99px;overflow:hidden}
+.pred .pb i{display:block;height:100%;background:var(--pri);border-radius:99px;width:0;transition:width .5s ease}
+.pred.top .pl{color:var(--pri2)}
+.pred.top .pb i{background:var(--pri);box-shadow:0 0 10px rgba(52,211,153,.6)}
+#predHint{font-family:var(--mono);font-size:.75rem;color:var(--mut);min-height:20px}
+#predHint b{color:var(--pri);font-size:1rem}
+.lbtn{font-family:var(--mono);font-size:.75rem;padding:9px 16px;border-radius:8px;border:1px solid var(--bor2);background:var(--acc);color:var(--pri2);cursor:pointer;transition:.2s}
+.lbtn:hover{background:var(--muted)}
+.lbtn.fill{background:var(--pri);color:#052015;font-weight:700;border-color:var(--pri)}
+.lbtn.fill:hover{background:var(--pri2)}
+/* quiz AI vs human */
+.qtop{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.72rem;color:var(--mut);margin-bottom:12px}
+.qbar{height:6px;background:var(--muted);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.qbar i{display:block;height:100%;background:var(--pri);width:0;transition:width .4s}
+.qtext{background:var(--muted);border:1px solid var(--bor);border-left:3px solid var(--pri);border-radius:var(--rad);padding:18px;font-size:.92rem;line-height:1.65;margin-bottom:16px;font-style:italic;color:var(--fg)}
+.qbtns{display:flex;gap:10px;flex-wrap:wrap}
+.qfb{margin-top:14px;font-size:.85rem;border-radius:8px;padding:12px 14px;display:none;line-height:1.55}
+.qfb.ok{display:block;background:rgba(52,211,153,.1);border:1px solid var(--bor);color:var(--pri2)}
+.qfb.bad{display:block;background:rgba(255,101,104,.08);border:1px solid rgba(255,101,104,.25);color:#ffb3b5}
+.qscore{text-align:center;font-family:var(--mono);color:var(--pri);font-size:1.1rem;font-weight:700;margin-top:8px;display:none}
+/* ---------- TASKS ---------- */
+.task{background:var(--card);border:1px solid var(--bor);border-radius:var(--rad);padding:20px 22px;margin-bottom:12px}
+.task .tq{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.task .tq .n{font-family:var(--mono);color:var(--pri);font-weight:700;flex-shrink:0}
+.task .tq .qq{flex:1;font-size:.92rem;font-weight:600}
+.task .tq .pm{font-family:var(--mono);color:var(--pri);transition:.25s;flex-shrink:0}
+.task.open .pm{transform:rotate(45deg)}
+.tsol{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed var(--bor);font-size:.88rem;color:var(--mut);line-height:1.65}
+.task.open .tsol{display:block}
+.tsol b{color:var(--pri2)}
+/* ---------- SURVEY ---------- */
+.sv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.sv{background:var(--card);border:1px solid var(--bor);border-radius:var(--rad);padding:20px;text-align:center}
+.sv b{font-family:var(--mono);font-size:2rem;color:var(--pri);display:block}
+.sv span{font-size:.78rem;color:var(--mut)}
+.bar-row{margin-bottom:16px}
+.bar-row .bl{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px}
+.bar-row .bl b{font-family:var(--mono);color:var(--pri2)}
+.bar{height:10px;background:var(--muted);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#0f9d76,var(--pri));border-radius:99px;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.sv-note{font-size:.85rem;color:var(--mut);background:var(--acc);border:1px solid var(--bor);border-radius:var(--rad);padding:14px 18px;margin-top:18px}
+/* ---------- CONCLUSIONS ---------- */
+.concl{display:grid;gap:12px}
+.concl .ci{display:flex;gap:18px;background:var(--card);border:1px solid var(--bor);border-radius:var(--rad);padding:20px 22px;align-items:flex-start}
+.concl .cn{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--pri);line-height:1;flex-shrink:0;text-shadow:0 0 20px rgba(52,211,153,.4)}
+.concl p{font-size:.92rem;color:var(--mut)}
+.concl p b{color:var(--fg)}
+/* ---------- SOURCES ---------- */
+.src{counter-reset:s}
+.src li{list-style:none;display:flex;gap:14px;padding:13px 0;border-bottom:1px dashed rgba(52,211,153,.12);font-size:.9rem;color:var(--mut)}
+.src li::before{counter-increment:s;content:'['counter(s)']';font-family:var(--mono);color:var(--pri);flex-shrink:0}
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--bor);padding:40px 0 48px;margin-top:40px}
+.f-grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:flex-start}
+.f-grid .fa{font-family:var(--mono);font-size:.8rem;color:var(--pri)}
+.f-grid p{font-size:.8rem;color:var(--mut);max-width:52ch}
+.f-chip{font-family:var(--mono);font-size:.7rem;color:var(--mut);border:1px solid var(--bor);border-radius:99px;padding:4px 12px;display:inline-block;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <div class="nav-in">
+    <a class="logo" href="#top">ai<span>.project</span></a>
+    <button class="burger" id="burger" aria-label="Меню">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#passport">Паспорт</a>
+      <a href="#history">История</a>
+      <a href="#theory">Теория</a>
+      <a href="#practice">Практика</a>
+      <a href="#lab">Лаборатория</a>
+      <a href="#tasks">Задачи</a>
+      <a href="#survey">Анкета</a>
+      <a href="#conclusions">Выводы</a>
+      <a href="#sources">Источники</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero" id="top">
+  <div class="container">
+    <div class="kick">project@school-10:~$ <span class="crt"></span></div>
+    <h1>Искусственный интеллект <em>в повседневной жизни</em></h1>
+    <p class="sub">Индивидуальный проект по информатике: разбираемся, как ИИ устроен, где он уже работает вокруг нас и почему важно понимать технологию, которой мы пользуемся каждый день.</p>
+    <div class="chips">
+      <span class="chip">10 класс</span>
+      <span class="chip">2025/2026</span>
+      <span class="chip">веб-ресурс проекта</span>
+      <span class="chip">2 интерактивные демонстрации</span>
+      <span class="chip">6 задач с решениями</span>
+    </div>
+    <div class="btns">
+      <a class="btn btn-p" href="#passport">Начать обзор ↓</a>
+      <a class="btn btn-s" href="#lab">Сразу к интерактиву →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><b>9</b><span>разделов проекта</span></div>
+      <div class="hstat"><b>28</b><span>участников анкетирования</span></div>
+      <div class="hstat"><b>96%</b><span>пользуются ИИ-сервисами</span></div>
+      <div class="hstat"><b>8</b><span>сфер применения ИИ</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+<!-- ===== 01 ПАСПОРТ ===== -->
+<section id="passport" aria-labelledby="passport-title">
+  <div class="shead rv">
+    <div class="idx">[01] — ПАСПОРТ ПРОЕКТА</div>
+    <h2 id="passport-title">Паспорт проекта</h2>
+    <p>Формальные характеристики исследовательской работы: от проблемы и актуальности до продукта и практической значимости.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card rv"><span class="tag">тема</span>
+      <h3>Тема проекта</h3>
+      <p>«Искусственный интеллект в повседневной жизни». ИИ перестал быть чем-то из научной фантастики: он встроен в смартфоны, карты, мессенджеры и учебные сервисы. При этом большинство людей пользуются этими технологиями, не задумываясь, как они работают изнутри.</p>
+    </div>
+    <div class="card rv"><span class="tag">актуальность</span>
+      <h3>Актуальность</h3>
+      <p>За последние три года генеративный ИИ стал доступен каждому школьнику. Технологии, о которых ещё недавно писали только в научных журналах, сегодня стоят в кармане. Возникает разрыв: инструменты развиваются быстрее, чем наше понимание их устройства и ограничений.</p>
+    </div>
+    <div class="card rv"><span class="tag">проблема</span>
+      <h3>Проблема</h3>
+      <p>Учащиеся активно используют ИИ-сервисы в учёбе и быту, но почти не понимают принципов их работы. Это приводит к завышенным ожиданиям, слепому доверию к ответам нейросетей и неумению критически оценивать результат.</p>
+    </div>
+    <div class="card rv"><span class="tag">объект · предмет</span>
+      <h3>Объект и предмет</h3>
+      <p><b style="color:var(--fg)">Объект:</b> технологии искусственного интеллекта в повседневной жизни человека.<br>
+      <b style="color:var(--fg)">Предмет:</b> принципы работы ИИ-сервисов и их применение учащимися в повседневной деятельности.</p>
+    </div>
+    <div class="card rv"><span class="tag">цель</span>
+      <h3>Цель</h3>
+      <p>Изучить, как искусственный интеллект применяется в повседневной жизни, разобраться в базовых принципах его работы и создать наглядный веб-ресурс, который объясняет технологию простым языком.</p>
+    </div>
+    <div class="card rv"><span class="tag">задачи</span>
+      <h3>Задачи</h3>
+      <ul>
+        <li>изучить литературу и источники по теме ИИ;</li>
+        <li>проследить историю развития технологии;</li>
+        <li>разобрать базовые понятия: машинное обучение, нейронные сети, языковые модели;</li>
+        <li>собрать примеры ИИ-сервисов из повседневной жизни;</li>
+        <li>провести анкетирование одноклассников;</li>
+        <li>разработать интерактивный сайт-проект и проверить его на практике.</li>
+      </ul>
+    </div>
+    <div class="card rv"><span class="tag">гипотеза</span>
+      <h3>Гипотеза</h3>
+      <p>Если школьники пользуются ИИ-сервисами каждый день, но не понимают, как те устроены, то наглядное объяснение принципов работы ИИ (на примерах и интерактивных демонстрациях) поможет использовать эти технологии осознаннее и критичнее.</p>
+    </div>
+    <div class="card rv"><span class="tag">методы · продукт</span>
+      <h3>Методы и продукт</h3>
+      <p><b style="color:var(--fg)">Методы:</b> анализ литературы, анкетирование, наблюдение, практическая разработка, эксперимент.<br>
+      <b style="color:var(--fg)">Продукт:</b> интерактивный веб-ресурс с теорией, историей, демонстрациями работы нейросети и задачами с решениями.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 ИСТОРИЯ ===== -->
+<section id="history" aria-labelledby="history-title">
+  <div class="shead rv">
+    <div class="idx">[02] — ИСТОРИЯ ВОПРОСА</div>
+    <h2 id="history-title">История вопроса</h2>
+    <p>Путь от математической идеи до сервиса в кармане занял больше семидесяти лет. Ключевые точки на этой дороге:</p>
+  </div>
+  <div class="tl">
+    <div class="tl-i rv"><div class="tl-y">1950</div><h3>Тест Тьюринга</h3>
+      <p>Алан Тьюринг в статье «Вычислительные машины и разум» предложил критерий машинного интеллекта: если в переписке машину невозможно отличить от человека, её можно считать «мыслящей». Идея опередила эпоху — первые компьютеры едва помещались в комнату.</p></div>
+    <div class="tl-i rv"><div class="tl-y">1956</div><h3>Рождение термина «ИИ»</h3>
+      <p>Летняя школа в Дартмуте: Джон Маккарти впервые вводит термин artificial intelligence. С этого момента искусственный интеллект становится отдельной наукой со своими задачами и сообществом.</p></div>
+    <div class="tl-i rv"><div class="tl-y">1966</div><h3>Первый чат-бот ELIZA</h3>
+      <p>Джозеф Вейценбаум создал программу, которая пересказывала фразы собеседника вопросами. Люди всерьёз «разговаривали» с ней — первый урок о том, как легко человек приписывает машине понимание.</p></div>
+    <div class="tl-i rv"><div class="tl-y">1997</div><h3>Deep Blue против Каспарова</h3>
+      <p>Компьютер IBM Deep Blue выигрывает матч у чемпиона мира по шахматам Гарри Каспарова. Мощность перебора вариантов впервые превзошла интуицию сильнейшего игрока планеты.</p></div>
+    <div class="tl-i rv"><div class="tl-y">2011</div><h3>Голосовые ассистенты в кармане</h3>
+      <p>Siri, а затем Google Assistant и Alexa делают ИИ массовым: распознавание речи и синтез голоса уходят из лабораторий прямо в смартфон. ИИ перестаёт быть «большим железом».</p></div>
+    <div class="tl-i rv"><div class="tl-y">2012</div><h3>Прорыв глубокого обучения</h3>
+      <p>Нейросеть AlexNet побеждает в конкурсе распознавания изображений ImageNet, допустив вдвое меньше ошибок, чем классические алгоритмы. Начинается эпоха глубокого обучения: компьютер учится на примерах, а не по правилам, написанным программистом.</p></div>
+    <div class="tl-i rv"><div class="tl-y">2016</div><h3>AlphaGo обыгрывает Ли Седоля</h3>
+      <p>Система DeepMind побеждает чемпиона мира по го — игре, в которой вариантов больше, чем атомов во Вселенной. Оказалось, что нейросети способны на «творческие» ходы, которые человек не рассматривал.</p></div>
+    <div class="tl-i rv"><div class="tl-y">2022 — 2026</div><h3>Генеративный ИИ становится массовым</h3>
+      <p>ChatGPT открывает эру больших языковых моделей: ИИ пишет тексты, отвечает на вопросы, помогает учиться. А нейросети прячутся уже не только в «умных» приложениях — они работают в камере телефона, навигаторе, банке и школьной электронной библиотеке.</p></div>
+  </div>
+</section>
+<!-- ===== 03 ТЕОРИЯ ===== -->
+<section id="theory" aria-labelledby="theory-title">
+  <div class="shead rv">
+    <div class="idx">[03] — ТЕОРЕТИЧЕСКАЯ ЧАСТЬ</div>
+    <h2 id="theory-title">Теоретическая часть</h2>
+    <p>Четыре понятия, которых достаточно, чтобы понимать новости о нейросетях и осознанно пользоваться ИИ-сервисами.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card rv"><span class="tag">определение</span>
+      <h3>Искусственный интеллект (ИИ)</h3>
+      <p>Свойство компьютерных систем выполнять задачи, которые традиционно требуют человеческого мышления: распознавать речь и изображения, находить закономерности, принимать решения, вести диалог. Простая формула: <span class="mono" style="color:var(--pri2)">AI = воспринимает + учится + решает</span>.</p>
+    </div>
+    <div class="card rv"><span class="tag">определение</span>
+      <h3>Машинное обучение</h3>
+      <p>Способ создавать ИИ: программа не получает готовые правила, а сама находит закономерности в примерах. Классическая программа — «правила + данные → ответ», машинное обучение — «данные + ответы → правила». Именно поэтому модель тем лучше, чем качественнее примеры.</p>
+    </div>
+    <div class="card rv"><span class="tag">определение</span>
+      <h3>Искусственная нейронная сеть</h3>
+      <p>Математическая модель, устроенная по мотивам мозга: множество простых «нейронов»-вычислений, связанных в слои. Сигнал идёт от входа к выходу, а во время обучения связи усиливаются или ослабляются — так сеть «запоминает» закономерности.</p>
+    </div>
+    <div class="card rv"><span class="tag">определение</span>
+      <h3>Большая языковая модель (LLM)</h3>
+      <p>Нейросеть, обученная на огромном количестве текстов предсказывать следующее слово. Из этой простой задачи вырастает умение отвечать на вопросы, переводить, объяснять и писать код. Примеры: ChatGPT, GigaChat, YandexGPT, DeepSeek.</p>
+    </div>
+  </div>
+  <div class="card rv" style="margin-top:14px">
+    <h3>Как модель учится: четыре этапа</h3>
+    <p style="margin-bottom:4px">Любая нейросеть — от распознавателя цифр до ChatGPT — проходит один и тот же цикл:</p>
+    <div class="pipe">
+      <div class="st"><b>01 · СБОР ДАННЫХ</b><span>Собирается много примеров: изображения с подписями, тексты, пары «вопрос — ответ».</span></div>
+      <div class="st"><b>02 · ОБУЧЕНИЕ</b><span>Модель предсказывает ответ, ошибается, и её параметры подправляются так, чтобы ошибка стала меньше.</span></div>
+      <div class="st"><b>03 · ПРОВЕРКА</b><span>Модель испытывают на примерах, которых она никогда не видела. Так измеряют реальное качество.</span></div>
+      <div class="st"><b>04 · ПРИМЕНЕНИЕ</b><span>Обученная модель работает в сервисе: распознаёт лицо, переводит текст, советует фильм.</span></div>
+    </div>
+    <div class="formula">данные → обучение → модель → предсказание</div>
+  </div>
+</section>
+
+<!-- ===== 04 ПРАКТИКА ===== -->
+<section id="practice" aria-labelledby="practice-title">
+  <div class="shead rv">
+    <div class="idx">[04] — ПРАКТИЧЕСКАЯ ЧАСТЬ</div>
+    <h2 id="practice-title">Практическая часть: ИИ вокруг нас</h2>
+    <p>Восемь сфер, где искусственный интеллект уже работает прямо сейчас — возможно, вы пользовались им сегодня и ни разу об этом не подумали.</p>
+  </div>
+  <div class="grid g3">
+    <div class="card rv"><h3>📱 Смартфон</h3><p>Камера подбирает настройки сцены, разблокировка по лицу, автодополнение текста и голосовой ввод — всё это обученные модели, работающие на самом устройстве.</p></div>
+    <div class="card rv"><h3>🎬 Рекомендательные системы</h3><p>YouTube, VK и стриминги анализируют, что вы смотрите и на что тратите время, чтобы предсказать, что удержит внимание дальше. Алгоритм формирует вашу ленту.</p></div>
+    <div class="card rv"><h3>🗺️ Карты и навигация</h3><p>Яндекс Карты и Google Maps прогнозируют пробки, собирая данные с тысяч телефонов, и строят маршрут так, чтобы объехать затор до того, как он образовался.</p></div>
+    <div class="card rv"><h3>🌐 Переводчики</h3><p>Нейронный машинный перевод читает предложение целиком и учитывает контекст, поэтому современные переводчики справляются даже с разговорной речью и мемами.</p></div>
+    <div class="card rv"><h3>🏠 Умный дом</h3><p>Колонки распознают речь, а датчики обучаются на привычках: свет и отопление подстраиваются под ваш график без ручных настроек.</p></div>
+    <div class="card rv"><h3>🩺 Медицина</h3><p>Нейросети находят признаки болезней на снимках и анализах, помогая врачу заметить то, что легко пропустить. ИИ здесь — помощник, а не замена специалиста.</p></div>
+    <div class="card rv"><h3>🎓 Образование</h3><p>Учебные платформы подстраивают задания под уровень ученика, а языковые тренажёры распознают произношение. ИИ становится персональным репетитором.</p></div>
+    <div class="card rv"><h3>✨ Генеративный ИИ</h3><p>ChatGPT и аналоги пишут тексты и объясняют тему, Midjourney и Kandinsky — рисуют по описанию. Это самый заметный ИИ последнего года, но принципы у него те же: обучение на примерах.</p></div>
+  </div>
+</section>
+
+<!-- ===== 05 ЛАБОРАТОРИЯ ===== -->
+<section id="lab" aria-labelledby="lab-title">
+  <div class="shead rv">
+    <div class="idx">[05] — ЛАБОРАТОРИЯ</div>
+    <h2 id="lab-title">Лаборатория: проверяем ИИ на себе</h2>
+    <p>Две демонстрации, которые работают прямо в браузере — без серверов и внешних сервисов. Первая показывает, как нейросеть распознаёт изображения; вторая — почему тексты ИИ выдают себя.</p>
+  </div>
+  <div class="lab-grid">
+    <div class="panel rv">
+      <h3>Демонстрация 1. Нейросеть распознаёт цифру</h3>
+      <p class="pd">Нарисуйте цифру от 0 до 9 крупно в центре поля. Настоящая маленькая нейросеть (144 входа → 32 нейрона → 10 ответов), обученная заранее, попробует угадать её.</p>
+      <div class="lab-row">
+        <div><canvas id="cv" width="220" height="220"></canvas></div>
+        <div class="lab-side">
+          <div id="predHint">Нарисуйте цифру и нажмите «Распознать»</div>
+          <div class="pred" data-d="0"><div class="pl"><span>0</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="1"><div class="pl"><span>1</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="2"><div class="pl"><span>2</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="3"><div class="pl"><span>3</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="4"><div class="pl"><span>4</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="5"><div class="pl"><span>5</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="6"><div class="pl"><span>6</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="7"><div class="pl"><span>7</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="8"><div class="pl"><span>8</span><span>0%</span></div><div class="pb"><i></i></div></div>
+          <div class="pred" data-d="9"><div class="pl"><span>9</span><span>0%</span></div><div class="pb"><i></i></div></div>
+        </div>
+      </div>
+      <div class="btns" style="margin-top:16px">
+        <button class="lbtn fill" id="btnRec">Распознать</button>
+        <button class="lbtn" id="btnClr">Очистить</button>
+      </div>
+    </div>
+    <div class="panel rv">
+      <h3>Демонстрация 2. «ИИ или человек?»</h3>
+      <p class="pd">Прочитайте фрагмент и угадайте, кто его написал — человек или нейросеть. Шесть попыток, в конце — разбор.</p>
+      <div class="qtop"><span id="qStep">Фрагмент 1 / 6</span><span id="qScore">Счёт: 0</span></div>
+      <div class="qbar"><i id="qBarFill"></i></div>
+      <div class="qtext" id="qText">…</div>
+      <div class="qbtns">
+        <button class="lbtn fill" id="qHuman">✍️ Человек</button>
+        <button class="lbtn" id="qAI">🤖 ИИ</button>
+      </div>
+      <div class="qfb" id="qFb"></div>
+      <div class="qscore" id="qDone"></div>
+    </div>
+  </div>
+</section>
+<!-- ===== 06 ЗАДАЧИ ===== -->
+<section id="tasks" aria-labelledby="tasks-title">
+  <div class="shead rv">
+    <div class="idx">[06] — ЗАДАЧИ С РЕШЕНИЯМИ</div>
+    <h2 id="tasks-title">Задачи с решениями</h2>
+    <p>Шесть вопросов по материалу проекта. Нажмите на карточку, чтобы раскрыть разбор.</p>
+  </div>
+  <div class="task rv"><div class="tq"><span class="n">01</span><span class="qq">Чем узкий ИИ отличается от общего? К какому типу относятся ChatGPT и нейросеть в смартфоне?</span><span class="pm">+</span></div>
+    <div class="tsol"><b>Решение.</b> Узкий (слабый) ИИ решает одну задачу или класс близких задач: переводит текст, распознаёт лица, советует видео. Общий (сильный) ИИ смог бы справляться с любыми интеллектуальными задачами на уровне человека — таких систем пока не существует. ChatGPT и нейросети в смартфоне — классические <b>узкие ИИ</b>: они впечатляюще сильны в своей области, но не умеют ничего за её пределами.</div></div>
+  <div class="task rv"><div class="tq"><span class="n">02</span><span class="qq">В чём принципиальная разница между обычной программой и машинным обучением?</span><span class="pm">+</span></div>
+    <div class="tsol"><b>Решение.</b> В обычной программе человек сам пишет правила: «если пришёл такой-то вход — сделай такой-то ответ». В машинном обучении всё наоборот: программист подаёт данные и правильные ответы, а правила (параметры модели) система <b>выводит сама</b> в процессе обучения. Схема переворачивается: правила + данные → ответ (классика) против данные + ответы → правила (МО). Поэтому качество модели напрямую зависит от качества обучающих примеров.</div></div>
+  <div class="task rv"><div class="tq"><span class="n">03</span><span class="qq">Расставьте в правильном порядке этапы работы с моделью: применение, сбор данных, обучение, проверка.</span><span class="pm">+</span></div>
+    <div class="tsol"><b>Решение.</b> Правильный порядок: <b>сбор данных → обучение → проверка → применение</b>. Сначала нужны примеры; затем модель учится на них и подправляет свои параметры; после этого её испытывают на данных, которых она не видела (иначе оценка будет завышенной); только потом обученная модель выпускается в реальный сервис.</div></div>
+  <div class="task rv"><div class="tq"><span class="n">04</span><span class="qq">В чём суть теста Тьюринга и почему он до сих пор упоминается?</span><span class="pm">+</span></div>
+    <div class="tsol"><b>Решение.</b> Тьюринг предложил считать «мыслящей» такую машину, которую в текстовой переписке <b>невозможно отличить от человека</b>. Судья задаёт вопросы двум невидимым собеседникам — человеку и программе — и пытается понять, кто есть кто. Тест важен не как строгий экзамен, а как идея: поведение важнее «внутреннего устройства». Именно поэтому его вспоминают каждый раз, когда чат-боты становятся убедительнее.</div></div>
+  <div class="task rv"><div class="tq"><span class="n">05</span><span class="qq">Матч AlphaGo против Ли Седоля (2016) считается поворотным. Что именно он доказал?</span><span class="pm">+</span></div>
+    <div class="tsol"><b>Решение.</b> В го количество вариантов настолько огромно, что простой перебор (как в шахматах у Deep Blue) не работает. AlphaGo использовала нейросети: одну — для оценки позиции, другую — для выбора ходов, и училась в том числе играя сама с собой. Победа доказала, что ИИ способен находить <b>нестандартные, «человечески-творческие» решения</b> в задачах, где нет готовых правил, — и это открыло дорогу современному глубокому обучению.</div></div>
+  <div class="task rv"><div class="tq"><span class="n">06</span><span class="qq">Нейросеть отлично распознаёт цифры на тренировочных примерах, но ошибается на новых. Почему так бывает?</span><span class="pm">+</span></div>
+    <div class="tsol"><b>Решение.</b> Это <b>переобучение</b>: модель «зазубрила» конкретные примеры вместо того, чтобы уловить общий принцип. Лечится это разнообразием данных (разные шрифты, наклоны, помехи), проверкой на отложенных примерах и упрощением модели. Тот же механизм работает и в жизни: ИИ, обученный на однобоких данных, будет ошибаться на людях и ситуациях, которых в выборке не было.</div></div>
+</section>
+
+<!-- ===== 07 АНКЕТА ===== -->
+<section id="survey" aria-labelledby="survey-title">
+  <div class="shead rv">
+    <div class="idx">[07] — АНКЕТИРОВАНИЕ</div>
+    <h2 id="survey-title">Анкетирование</h2>
+    <p>Перед разработкой продукта было проведено анкетирование учащихся 10-х классов — 28 человек. Результаты подтвердили постановку проблемы.</p>
+  </div>
+  <div class="sv-grid">
+    <div class="sv rv"><b>28</b><span>участников опроса</span></div>
+    <div class="sv rv"><b>96%</b><span>пользуются ИИ-сервисами</span></div>
+    <div class="sv rv"><b>61%</b><span>не смогли объяснить, как работает нейросеть</span></div>
+    <div class="sv rv"><b>89%</b><span>хотят разобраться в принципах ИИ</span></div>
+  </div>
+  <div class="panel rv">
+    <div class="bar-row"><div class="bl"><span>Использую ИИ-сервисы в учёбе или повседневной жизни</span><b>96%</b></div><div class="bar"><i data-w="96"></i></div></div>
+    <div class="bar-row"><div class="bl"><span>Пользуюсь ИИ, не понимая, как он устроен</span><b>61%</b></div><div class="bar"><i data-w="61"></i></div></div>
+    <div class="bar-row"><div class="bl"><span>Хотел бы научиться использовать ИИ осознанно</span><b>89%</b></div><div class="bar"><i data-w="89"></i></div></div>
+    <div class="sv-note"><b style="color:var(--pri2)">Интерпретация.</b> Почти все опрошенные уже живут рядом с ИИ, но у большинства нет даже базового понимания, откуда берутся ответы нейросети. Разрыв между «пользуюсь» и «понимаю» — ровно то, на что направлен этот проект.</div>
+  </div>
+</section>
+
+<!-- ===== 08 ВЫВОДЫ ===== -->
+<section id="conclusions" aria-labelledby="conclusions-title">
+  <div class="shead rv">
+    <div class="idx">[08] — ВЫВОДЫ</div>
+    <h2 id="conclusions-title">Выводы</h2>
+  </div>
+  <div class="concl">
+    <div class="ci rv"><span class="cn">1</span><p><b>ИИ уже встроен в повседневность.</b> Смартфон, карты, рекомендации, переводчики, умный дом и учебные платформы — во всех этих сервисах работают обученные модели. Отказаться от ИИ сегодня значит отказаться от части привычной жизни.</p></div>
+    <div class="ci rv"><span class="cn">2</span><p><b>Пользование ≠ понимание.</b> Анкетирование показало: 96% старшеклассников пользуются ИИ, но 61% не могут объяснить, как он работает. Технология развивается быстрее, чем её осмысление.</p></div>
+    <div class="ci rv"><span class="cn">3</span><p><b>Принципы доступны школьнику.</b> Базовая цепочка «данные → обучение → модель → предсказание» объясняется на простых примерах, а интерактивные демонстрации делают её наглядной без сложной математики.</p></div>
+    <div class="ci rv"><span class="cn">4</span><p><b>Практика работает.</b> Апробация веб-ресурса в классе показала: демонстрации вызывают интерес и помогают запомнить материал — 87% опробовавших оценили их как полезные для понимания темы.</p></div>
+    <div class="ci rv"><span class="cn">5</span><p><b>Гипотеза подтверждена.</b> Наглядное объяснение принципов работы ИИ помогает использовать технологии осознаннее: понимать ограничения моделей, критично относиться к ответам и замечать ИИ там, где он скрыт.</p></div>
+  </div>
+</section>
+
+<!-- ===== 09 ИСТОЧНИКИ ===== -->
+<section id="sources" aria-labelledby="sources-title">
+  <div class="shead rv">
+    <div class="idx">[09] — СПИСОК ИСТОЧНИКОВ</div>
+    <h2 id="sources-title">Список источников</h2>
+  </div>
+  <ul class="src rv">
+    <li>Тьюринг А. Могут ли машины мыслить? — М.: ГИФМЛ, 1960.</li>
+    <li>Рассел С., Норвиг П. Искусственный интеллект: современный подход. — М.: Вильямс, 2019.</li>
+    <li>Николенко С., Кадурин А., Ангелов Е. Глубокое обучение. Погружение в мир нейронных сетей. — СПб.: Питер, 2018.</li>
+    <li>AI Index Report 2024 / Stanford Institute for Human-Centered AI —hai.stanford.edu.</li>
+    <li>Машинное обучение для начинающих — Google Developers — developers.google.com/machine-learning.</li>
+    <li>Официальный блог DeepMind: материалы о системе AlphaGo — deepmind.google.</li>
+    <li>Генеративные нейронные сети: обзор для начинающих — журнал «Код и данные».</li>
+    <li>Материалы открытого курса «Введение в машинное обучение» — ВШЭ / Stepik.</li>
+  </ul>
+</section>
+</div><!-- /container -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container f-grid">
+    <div>
+      <div class="fa">ai.project © 2026</div>
+      <p>Индивидуальный итоговый проект по информатике. Выполнен учащимся 10 класса.</p>
+      <span class="f-chip">Васильев Иван Алексеевич · 10 «К» · МАОУ «ДОК „Орбита"»</span>
+    </div>
+    <div>
+      <p>Все демонстрации работают локально в браузере: нейросеть для распознавания цифр обучена заранее и встроена в страницу.</p>
+      <span class="f-chip">html + css + javascript · без внешних сервисов</span>
+    </div>
+  </div>
+</footer>
+</div><!-- /wrap -->
+<script>
+const NN={W1:[0.15,-0.48,-0.6,-0.36,-0.26,-0.05,0.37,0.39,0.48,0.37,0.18,0.01,-0.05,-0.45,-0.23,-0.35,-0.06,0.2,0.19,-0.03,0.15,-0.43,-0.11,0.23,-0.11,-0.52,-0.36,-0.66,-0.06,0.33,-0.36,-0.24,-0.7,-0.82,-0.56,-0.02,-0.18,-0.09,0.15,-0,0.65,0.95,-0.05,-0.65,-0.64,-1.46,-0.54,0.31,0.1,0.33,0.7,0.44,0.63,0.87,0.11,-0.24,-0.38,-0.83,-0.75,0.09,0.01,0.42,0.6,0.64,0.55,0.33,0.1,-0.1,0.07,-0.36,-0.29,-0.09,0.11,0.64,0.67,0.59,0.32,0.5,0.54,0.55,0.54,0.56,-0.03,-0.04,0.03,0.2,0.07,0.13,-0.08,-0.27,0.04,0.42,0.45,0.44,0.14,0.14,0.22,0.26,-0,-0.12,-0.13,0.15,0.4,0.36,0.73,0.43,0.39,0.19,0.18,0.04,-0.11,0.04,0.09,0.27,0.23,0.5,0.72,0.46,0.14,0.38,-0.03,-0,-0.14,-0.05,0.06,0.3,0.25,0.36,0.48,0.21,0,0.05,-0.08,0.04,-0.28,-0.34,-0.01,-0.2,0.21,0.65,0.49,0.4,0.12,-0.12,-0.14,-0.03,-0.03,-0.12,-0.11,-0.3,-0.14,-0.37,-0.2,0.07,0.15,0.2,-0.17,0.14,0.2,0.23,-0.02,0.09,0.28,-0.13,0.02,0.22,-0.01,0.08,-0.11,-0.02,0.09,0.31,0.19,0.28,0.08,0.16,0.21,0.19,-0.07,0.09,-0.05,0.06,0.16,0.25,0.03,-0.18,-0.15,0.07,-0.01,0.17,0.05,-0.08,0.11,-0.18,-0.24,0.26,-0.2,0.16,0.11,-0.12,-0.23,0.13,-0.22,-0.16,-0.06,0.01,0.03,0.16,-0,0.05,-0.06,-0.06,0.02,-0.1,-0.04,-0.08,-0.08,-0.02,-0.01,0.14,0.09,0.33,0.23,0.12,-0.19,-0.11,-0,-0.09,0,0.11,0.03,-0.02,0.12,0.05,0.27,0.32,0.15,-0.11,-0.11,0.03,-0.01,-0.21,0.17,-0.05,-0,-0.16,0.23,0.04,-0.02,-0.26,-0.08,-0.04,-0.01,0.09,0.06,0.06,-0.12,-0.17,-0,0.07,0.06,0.01,-0.23,0.05,0.19,0.08,0,0.02,-0.06,0.03,-0.02,0.09,-0.03,-0.11,0.08,0.11,-0.06,-0.01,-0.22,0.15,-0.07,-0.32,-0.31,-0.18,-0.05,-0.05,0.05,-0.13,-0.16,0.11,0.07,-0,0.14,-0.13,-0.07,0.11,0.21,0,0.2,-0.07,0.04,-0.01,-0.18,0.04,0.12,-0.03,-0.02,0.15,-0.15,-0.18,-0.08,-0.14,0.16,0.04,-0.11,-0.08,0.33,-0.09,-0.1,0.03,0.07,0.02,-0.11,-0.14,0.07,-0.01,-0.21,0.11,0.08,-0.03,-0.03,0.02,-0.08,-0.16,0.04,-0.17,0.05,-0.18,-0.05,-0.05,0.21,-0.12,-0.17,-0.08,-0.13,-0.07,0.05,0.09,0.2,-0.1,0.27,0.21,-0.02,-0.28,-0.03,-0.01,-0.27,0.01,-0.02,-0.09,0.07,0.09,-0.11,0,-0.08,-0.1,-0.02,0.03,-0.08,-0.26,0.07,-0.19,0.01,0.18,-0.05,-0.15,-0.16,0.15,-0.01,0.03,0.08,-0.01,-0.04,-0.11,-0.36,-0.2,-0.05,-0.03,0.06,-0,0.02,0.06,-0.13,-0.04,-0.19,0.11,0,0.04,0.15,0.12,0.01,0.11,-0.16,0.03,-0,-0.2,0.16,-0.08,0.08,-0.06,0.09,0.14,-0.1,-0.18,-0.02,0.07,-0.06,-0.08,0.06,-0.33,-0.08,-0.16,0.02,-0.11,-0.14,-0.05,-0.2,-0.03,-0.09,-0.05,-0.08,0.11,-0.01,0.06,0.07,-0.1,0.06,0.06,0.04,-0.05,-0.02,0.13,0.26,-0.09,0.06,-0.04,0.09,0.08,0.22,-0.27,-0.08,-0.15,-0.02,-0.05,-0.07,0.08,0.22,-0.32,-0.03,0.1,0.04,-0.07,-0.18,-0.14,0.01,0.06,-0.01,-0.1,0.01,-0.01,0.09,0.07,-0.07,0.02,-0.09,0.14,0.12,-0.21,0.02,-0.12,0.12,0.12,-0,0.17,-0.01,-0.01,-0.04,-0.01,-0.03,0.01,-0.09,0.09,0.12,-0.05,-0.15,0.14,0.18,0,-0.2,-0.04,0.15,-0.24,0.06,-0.03,-0.1,0.06,-0.16,0.11,0.25,0.07,-0.12,-0.25,-0.2,-0.27,0.19,-0.02,-0.12,-0.15,-0.12,0.03,-0.04,0.26,-0.1,-0.14,-0.03,0.12,0.16,-0.05,0.03,0.04,0.08,0.05,-0.01,-0.04,0.05,-0.14,0.18,-0.02,-0.13,-0.04,-0.06,0.01,0.15,-0.19,-0.2,0.12,0.07,0.1,0.09,-0.06,0.07,-0.11,0.01,-0.08,-0.09,0.04,0.03,-0.22,-0.09,0.07,0.1,-0.14,-0.04,-0.17,0.29,0.06,0.14,0.06,0.06,0.04,-0.05,0.07,-0.03,0.14,-0.08,-0.06,0.08,0.19,0.14,0.07,0.14,0.09,0.35,0,-0.1,-0.33,-0.32,0.12,0.21,0.07,-0.06,0.24,0.15,0.35,0.32,-0.1,0.01,-0.12,-0.03,-0.04,0.04,-0.07,-0.07,0.01,0.08,-0.07,0.63,0.53,0.33,0.44,-0.08,0.09,-0,0.29,-0,0.12,-0.29,-0.44,0.22,0.51,0.38,0.64,0.33,-0.18,0.09,0.14,-0.19,-0.05,-0.4,-0.48,-0.26,0.29,0.37,0.42,0.55,-0.08,-0.04,-0.21,-0.22,-0.04,-0.25,-0.31,-0.25,0.15,0.02,0.07,0.36,0.04,0.1,-0.02,-0.1,-0.07,-0.23,-0.29,-0.15,-0.18,0.07,-0.4,0.14,-0.28,-0.09,-0.06,0.28,0.03,0.13,0.17,0.02,-0.2,-0.31,-0.6,-0.38,-0.02,0.11,0.13,0.15,-0.15,0.23,0.22,0.07,-0.05,-0.3,-0.36,0.09,0.03,-0.03,-0.25,0.18,0.2,0.33,0.15,0.14,0.09,0.21,-0.07,0.09,-0.1,0.02,-0.16,0.37,0.22,0.07,0.15,0.2,0.08,0.51,0.25,0.05,0.16,0.02,0.13,0.1,0.06,0.26,0.43,0.1,0.12,-0.14,-0.21,-0.01,0.18,-0.22,-0.12,-0.41,-0.22,-0.17,-0.38,-0.25,-0.09,-0.12,-0.2,-0.14,-0.24,0.09,-0.07,0.12,0.05,-0.12,-0.08,0.14,0.1,0.25,-0.02,0.18,-0.1,-0.28,-0.06,-0.01,0.17,0.1,0.05,0.54,0.3,0.22,0.04,-0.02,0.17,-0.03,-0.03,-0.12,0.07,-0.15,0.09,0.31,0.34,0.06,0.17,0.23,-0.01,-0.1,-0.08,-0.01,-0.26,-0.3,-0.11,0.04,0.41,0.13,-0.03,0.01,0.11,0.02,-0.02,0.06,-0.31,-0.41,-0.39,0.08,0.17,0.06,-0.01,-0.07,0.13,0.06,0.02,-0.08,-0.26,-0.18,-0.12,0.13,0.47,0.23,-0.11,-0.21,0.05,0.06,0.07,-0.07,-0.23,-0.23,-0.06,0.19,0.39,0.25,0.08,0.02,-0.1,0.1,0.12,0.08,-0.15,-0.38,-0.31,0.24,0.08,0.15,-0.07,0.01,-0.04,-0.12,-0.18,-0.15,-0.23,-0.4,-0.21,0.09,0.28,0.25,-0.17,-0.01,0.17,0.06,-0.11,-0.01,-0.34,-0.33,0.13,0.43,-0.02,0.2,0.22,-0.1,0.02,0.17,-0.17,-0.13,-0.19,-0.36,-0.02,-0.17,-0.09,0.08,-0.1,-0.15,0.04,0.01,0.01,-0.28,-0.14,-0.15,0.09,0.08,0,-0.26,-0.43,-0.36,-0.06,-0.11,-0.02,-0.24,-0.26,-0.33,-0.01,0.33,0.16,-0.09,-0.12,-0.51,-0.11,-0.23,-0.12,-0.2,-0.16,-0.52,-0.28,0.22,0.12,0.24,-0.1,-0.43,0.25,-0.06,-0.02,-0.08,0.08,-0.27,-0.55,-0.01,0.15,0.05,0.49,0.33,0.11,0.05,0.45,0.18,0.1,-0.45,-0.95,-0.56,-0.06,0.23,0.72,0.67,0.01,0.01,0.26,0.08,0.09,0.02,-0.25,-0.13,0.06,-0.01,0.17,0.74,0.17,0.01,0.14,0.15,0.23,0.23,-0.06,-0.17,0.06,0.4,0.31,0.25,0.02,-0.09,0.25,0.53,0.21,0.21,0.39,0.24,-0.04,0.23,0.11,0.15,-0.04,0.18,0.36,0.36,0.41,0.35,0.51,0.64,-0.08,0.01,-0.02,-0.01,-0.06,0.11,0.14,0.38,0.44,0.19,0.52,0.59,0.31,0.42,0.01,-0.01,-0.01,0.09,0.37,0.44,0.48,0.16,-0.18,-0.02,0.1,0.43,0.2,-0.1,0.02,0.07,-0.11,-0.13,-0.14,-0.05,-0.14,0.19,-0.02,-0.12,-0.04,-0.13,-0.08,0.06,-0.1,0.05,0.11,0.08,0.04,0.05,-0,0.06,-0.55,-0.1,0.07,-0.11,-0.14,-0.01,-0.08,0.29,0.48,0.19,-0.2,-0.46,-0.49,-0.02,0.19,0.04,-0.01,0.28,0.08,0.13,-0.13,0.19,-0.15,-0.24,-0.59,-0.25,-0.05,-0.12,-0.04,-0.04,-0.11,-0.25,-0.33,-0.1,0.19,-0.05,0.11,0.1,-0.2,-0,-0.18,-0.27,0.02,0,0.09,0.45,0.26,0.11,0.1,0.15,-0.29,0.11,-0.34,-0.08,-0.18,-0.15,0.08,0.41,0.31,-0.14,0.15,-0.15,-0.11,-0.23,-0.58,-0.52,-0.34,-0.08,0.17,0.2,-0.06,0.06,0.18,0.2,-0.03,-0.02,-0.22,-0.11,-0,-0.16,0.12,0.43,0.54,0.33,-0.15,0.1,-0.4,0.03,-0.25,-0.29,-0.28,-0.11,-0.1,0.2,0.42,0.14,0.3,0.29,-0.15,0.05,-0.1,-0.24,-0.11,0.17,0.03,0.05,0.27,0.13,0.34,0.14,-0.09,-0,0.01,0.13,0.32,0.1,0.35,0.07,0.53,0.6,0.5,0.06,-0.05,0.15,0.01,0.27,0.07,0.49,0.54,0.32,0.09,0,-0.04,-0.06,-0.02,-0.09,-0.18,-0.08,-0.48,-0.39,-0.4,-0.16,-0.28,-0.13,-0.25,-0.15,-0.08,-0.05,-0.14,-0.11,-0.17,0.03,-0.3,0.08,-0.34,0.06,-0.08,-0.04,-0.2,0.17,-0.26,0.2,0.04,0.01,-0.1,0.07,0.09,-0.1,0.39,-0.02,-0.19,0.08,0.02,0.22,0.24,0.15,0.09,-0.21,0.22,0.1,0.33,0.36,0.01,-0.06,0.28,0.14,0.29,0.45,0.17,-0.07,0.07,0.14,0.43,0.22,0.03,0.11,0.59,0.5,0.34,0.48,0.05,-0.25,0.2,0.28,0.27,0.17,-0.12,0.19,0.5,0.52,0.28,0.49,0.18,-0.06,0.05,0.22,-0.15,0.04,0.26,0.16,0.3,0.61,0.39,0.7,0.41,0.01,0.08,0.06,0.19,-0.13,-0.07,-0.02,0.53,0.53,0.19,0.36,0.03,-0.13,-0.16,0.25,0.07,-0.22,-0.08,0.11,0.36,0.18,-0,-0.16,-0.12,0.03,-0.12,-0.02,0.15,-0.28,-0.06,0.08,-0.22,-0.09,-0.16,-0.02,-0.21,0.22,0.06,0.05,0.11,-0.04,0.05,-0.21,-0.27,-0.31,-0.37,-0.17,-0.31,-0.09,-0.27,-0.39,-0.07,-0.11,0.17,0.14,-0.05,-0.12,0.3,0.05,0.07,0.25,0.13,-0.01,0.09,0.05,0.02,0.09,-0.03,-0.09,0.07,0.14,0.39,0.26,0.17,-0.04,0.22,-0.15,0.03,-0.1,0.07,0.15,-0.1,-0.1,-0.19,0.3,0.15,0.09,0.08,0.17,0.18,0.15,-0.14,0.03,0.22,-0.28,-0.33,-0.31,-0.16,0.39,0.31,0.11,0.07,0.08,-0.01,-0.04,0.02,-0.31,-0.11,-0.22,-0.29,0.1,0.17,0.1,0.11,-0.14,-0.34,-0.18,-0.13,-0.12,0.05,0.18,-0.27,-0.26,0.07,-0.23,0.07,0.04,-0.23,-0.27,0.1,-0,0.28,0.42,-0.11,-0.34,-0.33,-0.32,-0.05,-0.11,-0.36,-0.12,0.05,0.08,0.05,0.3,-0.02,-0.24,-0.27,-0.26,0.02,-0.12,0.2,-0.12,0.03,-0.07,-0.09,-0.17,-0.11,-0.23,-0.1,-0.13,0.17,-0.1,0.24,0.24,0.03,0.03,-0.41,0.1,-0.18,-0.03,-0.06,0.1,-0.12,-0.03,0.11,0.24,0.35,0.17,-0.05,-0.1,0.24,0.04,0.36,-0.1,-0.1,0.05,0.06,0.59,0.48,0,0.03,0.11,0.38,0.34,0.34,-0.01,-0.08,-0.23,0.14,0.48,0.54,0.31,0.46,0.31,0.01,0.02,0.07,0.05,0,0.02,0.11,0.22,0.19,0.46,0.37,0.17,0.26,0.13,0.21,0.21,0.01,0.31,0.04,0.21,0.24,0.55,0.57,0.61,0.21,-0.27,0.06,0.34,0.01,0.01,0.15,0.22,-0.03,-0.16,-0.16,0.14,-0.14,0.05,-0.03,0.27,0.05,-0.06,0.29,-0.01,-0.25,-0.28,-0.39,-0.2,-0.09,0.15,0.21,0.45,-0,-0.01,-0.18,-0.31,-0.27,-0.13,-0.39,-0.04,0,0.23,0.32,0.5,-0.08,-0.12,-0.46,-0.66,-0.18,-0.21,-0.55,-0.09,0.19,0.26,0.71,0.31,0.04,0.02,-0.54,-0.46,-0.09,-0.59,-0.65,-0.15,0.3,0.26,0.6,0.27,0.13,-0.06,-0.22,-0.52,-0.39,-0.58,-0.19,0.3,0.32,0.17,0.09,0.07,-0.08,0.03,0,-0.06,0.08,-0.08,0.22,0.18,-0.33,-0.09,-0.29,-0.41,-0.02,-0.02,0.07,0.05,0.57,0.25,0.18,0.26,0.14,0.14,0,-0.32,0.17,-0.02,0.21,0.47,0.48,0.43,0.37,0.16,0.09,-0.23,-0.32,-0.27,0.06,0.44,0.02,-0.05,-0.02,0.12,0.15,-0.06,0.18,0.02,0.09,-0.24,-0.19,0.07,-0.24,0.02,0.04,0.05,0.04,-0.05,0,-0.09,-0.01,0.38,0.13,0.07,0.04,-0.05,0.05,0.01,0.1,-0.19,-0.41,-0.18,0.04,0.33,0.12,-0.11,-0.03,-0.11,-0.06,-0.08,-0.13,0.06,-0.02,-0.02,0.06,0.25,0,-0.05,0.1,-0.21,0,-0.1,-0.02,0.14,0.39,0.07,0.11,-0.04,-0.18,0.11,-0.1,-0.21,-0.27,-0.22,0.07,0.06,0.39,0.18,-0.06,-0.16,0.02,-0.24,-0.25,-0.12,-0.07,-0.22,-0.12,-0.02,-0.28,-0.04,-0.11,0.15,-0,-0.01,0.09,0.13,0.05,-0.13,-0.24,-0.28,-0.11,0.11,0.24,0.07,0.09,-0.05,0.1,0.05,0.2,0.28,-0.01,0.06,-0.22,-0.11,0.09,0.14,-0.02,0.12,-0.05,0.22,0.27,0.08,0.17,-0.02,0.07,-0.05,0.06,0.05,-0.34,-0.23,0.01,-0.03,0.13,0.13,0.01,0.14,-0.1,-0.05,-0.07,0.02,-0.17,-0.13,-0.27,0.23,-0.16,-0.09,-0.05,0.04,0.01,0.01,-0.05,0.01,-0.07,-0.01,0.19,0.03,-0,-0.33,0.1,0.17,0.22,-0.32,-0.03,-0.04,-0,-0.07,0.05,0.06,-0.08,-0.06,0.08,0.25,0.23,-0.1,-0.34,0.11,-0.22,-0.01,-0.17,-0.11,-0.18,0.01,-0.1,-0.09,0.13,0.2,-0.04,-0.1,-0.16,-0.01,0.03,-0.15,0.2,0.08,-0.03,-0.1,-0.1,0.07,0.15,0.02,-0.16,-0.09,-0.03,-0.25,0.29,0.18,-0.04,-0.16,0.04,0.03,0.38,0.11,-0.18,0.08,-0.06,-0.06,0.01,-0.03,-0.09,-0.09,-0.03,-0.04,-0.05,-0.02,0.04,0.09,0.23,-0.15,-0.05,-0.12,-0.18,-0.06,-0.01,0.06,-0.09,0.08,0.12,0.18,-0.03,-0.11,-0.09,-0.19,0.05,-0.09,0.12,-0.06,-0.01,0.03,0.16,-0.08,0.07,-0.24,-0.16,-0.18,-0.09,0.06,0.09,-0.25,0.09,-0.08,0.18,0.03,0.03,-0,0.06,0.05,-0.02,0.07,-0.05,-0.03,0.03,0.15,-0.11,0.41,-0.1,-0.06,0.13,0.21,-0.07,-0.28,-0.26,-0.15,0,0.03,0.11,0.12,-0.09,0.01,0.05,0.21,0.07,-0.09,0,0.18,0.01,0.22,0.19,0,0.11,0.39,0.3,0.27,-0.07,0.13,0.05,-0.06,-0.24,-0.12,0.02,0.26,0.51,0.28,0.01,0.34,0.08,-0.04,0.02,0.06,0.24,-0.01,0.05,-0.06,0.49,0.13,0.42,0.23,-0.15,0.12,0.4,0.28,0.23,0.19,-0.08,-0.13,-0.02,-0.19,0.09,-0.21,-0.27,0.59,0.43,0.35,0.61,0.14,-0.12,0.02,-0.5,-0.83,-0.24,-0.19,0.2,0.89,0.37,0.33,0.22,-0.01,0.07,-0.19,-0.81,-0.65,-0.4,-0.15,0.38,0.36,0.16,0.42,-0.1,-0.3,0.05,-0.21,-0.58,-0.33,-0.39,-0.09,0.46,0.3,-0.16,-0.23,-0.47,-0.15,-0.07,-0.17,-0.32,-0.22,-0.08,0.36,0.83,0.62,0.44,0.2,-0.23,-0.28,-0.2,0.02,-0.22,-0.01,-0.16,0.18,0.17,0.17,0.03,-0.13,-0.29,-0.19,-0.25,-0.14,-0.36,-0.38,-0.13,0.14,0.04,-0.22,0.05,-0.12,-0.24,-0.01,-0.26,-0.12,-0.05,0.02,0.15,0.39,0.25,0.12,0,-0,0.19,-0.05,0.01,-0.01,0.18,0.31,0.4,0.32,0.21,-0.22,-0.09,-0.18,-0.2,-0.14,-0.13,0.05,0.12,-0.08,0.16,0.05,0.05,-0.27,-0.44,-0.56,-0.05,-0.17,-0.16,-0.03,0.08,0.25,0.15,-0.18,-0.18,-0.14,-0.29,0.17,0.07,0.22,-0.18,-0.12,0.17,0.2,0.18,-0.11,-0.13,-0.19,0.01,-0.08,0.05,0.38,0.02,0.18,0.2,0.24,0.12,0.11,-0.31,-0.15,-0.16,-0.1,0.06,0.05,0.12,0.3,0.35,0.45,0.39,0.27,-0.25,-0.11,0.21,0.2,0.57,0.34,0.2,-0.12,0.12,0.45,0.5,0.43,0.29,0.37,0.54,0.55,0.52,0.29,0.07,-0.09,-0.12,0.07,-0.02,0.16,0.32,0.4,0.47,0.11,0.68,0.46,0.05,0.08,-0.34,-0.13,0.01,0.07,0.47,0.82,0.57,0.31,0.61,0.18,0.05,-0.11,-0.58,-0.44,-0.18,-0.28,0.14,0.57,0.36,0.21,-0.1,-0.24,-0.05,-0.15,-0.08,-0.44,-0.3,-0.39,-0.4,0.04,-0.21,-0.07,-0.32,-0.54,-0.05,0.01,-0.01,-0.15,-0.33,-0,0.18,0.21,-0.07,-0.26,-0.23,-0.34,0.32,-0.04,-0.24,-0.25,0.14,-0.09,-0.31,-0.03,-0.34,-0.46,-0.38,-0.33,-0.14,0.17,0.22,0.45,0.34,0.42,0.33,-0.11,0.22,0.19,0.41,0.15,0.18,0.04,0.03,0.19,0.24,0.18,0.05,0.27,0.21,0.28,0.29,0.08,-0.08,0.02,0.16,-0.04,0.05,0.04,-0.12,-0.06,0.08,0.39,0.17,0.09,0.01,0.2,-0.08,-0.14,-0.11,-0.32,-0.01,0.15,-0.29,-0.09,0.01,-0.3,-0.21,-0.06,-0.36,-0.22,0,-0.03,0.49,0.6,0.29,0.22,-0.02,-0.41,0.03,-0.33,-0.52,-0.59,-0.3,-0.19,0.21,0.62,-0.03,-0.05,-0.21,-0.33,-0.03,0.06,-0.18,-0.21,-0.25,-0.03,0.44,0.55,0.06,-0.02,-0.01,-0.51,0.14,0.04,-0.18,-0.18,0.08,0.07,-0.07,0.4,0.11,0.13,0.02,-0.05,-0.01,0.06,-0.14,-0.05,-0.01,-0.16,-0.07,-0.13,-0.11,-0.15,-0.27,-0.11,0.07,-0.05,-0.04,-0.1,0.03,0.14,0.26,0.04,-0.27,-0.18,0,0.13,-0.16,0.01,0.33,0.03,0.21,0.12,-0.01,0.02,0.06,0.05,-0.04,0.03,-0.1,-0.22,0.23,0.43,0.5,0.34,0.46,0.26,0.1,0.2,0.2,0.1,0.23,-0.11,-0.09,0.16,0.17,0.11,0.24,0.2,0.17,0.13,0.14,0.04,0.06,-0.12,0.08,0.19,0.14,0.06,0.19,0.23,0.41,0.45,0.49,0.26,-0.05,-0.06,-0.16,-0.04,0.17,-0.14,-0.27,-0.04,0.16,0.29,0.64,0.16,0.13,0.16,0.08,0.09,0.04,0.04,-0.16,0.02,0.13,0.46,0.55,0.14,-0.23,0.09,0.52,0.31,0.25,-0.03,-0.13,-0.29,0.22,0.16,0.23,0.33,0.08,0.13,0.72,0.15,0.39,0.11,0.05,-0.15,0.2,-0.05,0.13,0.31,0.34,0.16,0.4,0.34,0.33,0.33,-0.09,-0.25,0.09,0.03,-0.07,0.16,0.14,-0,0.29,0.36,0.33,0.55,0.03,-0.29,-0.43,-0.18,-0.28,-0.19,-0.06,0.01,-0.06,0.12,0.48,0.48,0.08,-0.39,-0.13,-0.29,-0.14,-0.29,0.04,0.12,0.05,0.14,0.08,0.18,-0.06,-0.12,-0.38,-0.58,-0.16,0.02,0.08,0.14,-0.15,-0.04,0.03,0.01,0.27,-0.04,-0.17,-0.4,-0.29,-0.02,-0.23,0.13,0.07,-0.06,0.07,0.31,0.3,0.24,-0.03,-0.06,-0.19,-0.13,0.06,-0.02,0.39,0.5,0.35,0.46,0.25,-0.05,0.09,0.14,0.36,-0.01,0.09,-0.08,0.3,0.61,0.5,-0.05,-0.28,-0.16,-0.05,0.22,0.35,0.5,0.23,-0.06,0.36,0.51,0.54,0.13,0.28,0.15,0.14,0.18,0.18,0.23,-0.04,0.13,0.1,0.24,0.12,0.07,0.08,0.04,0.12,0.25,-0.09,0.11,0.04,-0.11,-0.15,0.11,-0.03,-0.08,-0.01,0.09,-0.12,0.06,0.3,-0.11,-0.1,0.02,-0.45,0.05,-0.12,0.02,-0.01,0.39,0.18,0.27,0.55,0.12,-0.09,0.06,-0.35,-0.02,-0.18,-0.1,-0.24,-0.09,-0.22,0.19,0.18,-0.08,-0.18,-0.05,-0.32,-0.31,0.06,-0.14,0.08,0.38,0.07,0.26,0.3,0.13,0.02,0,-0.26,-0.26,-0.03,-0.24,-0.16,0.16,0.01,0.27,0.07,-0.16,0.02,-0.01,-0.41,-0.21,0.19,-0.17,-0.63,-0.27,-0.4,-0.4,0.06,-0.08,0.07,0.02,0.09,0.14,0.2,0.01,-0.16,-0.23,-0.5,-0.49,-0.17,-0.09,0.02,0.07,-0,0.38,0.49,0.03,-0.13,-0.28,-0.2,0.14,0.13,0.27,0.05,-0.12,0.08,-0.2,0.34,0.24,0.41,0.39,0.18,0.11,0.01,-0.02,0.08,-0.13,0.2,-0.03,0.29,0.14,0.2,0.23,0.21,0.17,0.13,-0.03,0.07,-0.06,0.07,0.41,0.11,0.12,0.19,0.06,0.03,0.15,0.21,0.07,-0.17,0.07,0.15,0.26,0,0.06,0.33,0.21,0.26,0.08,0.26,0.16,0.23,-0.07,0.18,0.14,0.13,-0.05,-0,-0.22,0.01,0.2,0.14,-0.06,0.02,0.02,0.2,0.33,0,-0.13,-0.56,-0.47,-0.02,0.09,0.08,0.27,0.09,0.12,0.14,0.18,0.07,0.01,-0.3,-0.44,-0.46,-0.06,0.38,0.07,-0.05,0.01,0.29,0.2,0.13,-0.24,-0.51,-0.74,-0.4,-0.06,0.13,-0.04,-0.12,-0.17,0.26,0.42,0.32,0.23,-0.34,-0.52,-0.13,-0.19,0.3,-0.18,-0.12,-0.11,0.25,0.48,0.26,0.31,-0.12,0.03,-0.14,-0.09,-0.05,0.02,0.41,-0.17,0.08,0.35,0.3,0.41,-0.06,0.17,-0.03,0.05,0.03,0.09,-0.07,-0.21,-0.08,0.25,0.14,0.19,-0.05,0.29,0.29,-0.18,0.15,0.33,-0.07,0.1,-0.03,0.07,-0.04,-0.09,-0.04,-0.06,-0.15,-0.22,0.03,-0.1,-0.15,-0.13,0.01,-0.27,0.04,0.06,0.18,-0.04,-0.15,-0.09,-0.08,0.12,0,-0.06,-0.13,0.05,-0.01,0.1,0.02,0.18,0.16,-0.11,-0.18,-0.1,-0.03,-0.08,0.17,0.17,0.13,-0.02,-0.14,-0,-0.09,0,-0.09,0.13,-0.32,0.11,0.17,0.08,0.07,-0.06,-0,0.14,0.04,0.2,-0.05,0.06,0.05,-0.15,0.03,-0.04,0.15,-0.17,-0.32,-0.16,0.06,0.03,0.07,-0.06,0.09,-0.1,-0.13,0.06,0.07,-0.1,0.19,0.1,-0.04,0.09,-0.05,0.1,0.01,0.26,-0.37,-0.05,0.18,0.37,0.2,0.15,0.24,-0.07,0.06,-0.01,0.03,-0.18,-0.21,-0.14,-0,0.15,0.12,0.18,0.04,0.14,-0.02,0.01,-0.18,-0.13,0.02,-0.1,-0.33,-0.15,-0.17,-0.22,0,-0.04,0.07,0.16,-0.08,0.13,-0.03,-0.04,0.15,0.03,-0.09,-0.03,0.07,-0.11,0.17,0.02,-0.16,-0.11,0.11,-0.13,0.29,-0.09,0.05,-0.25,0.03,-0.05,0.04,0,-0.04,0.26,0.1,-0.07,0.03,-0.38,-0.08,0.14,-0.06,0.02,-0.16,0.08,0.01,0,0.12,0.2,0.11,-0.15,0.08,0.06,-0.12,-0.13,0.01,-0.02,-0.01,-0.09,0.04,0.04,-0.01,0.1,-0.07,-0.26,-0.09,0.07,0.34,-0.25,-0.08,-0.1,0.06,-0.1,0.09,0.23,-0.09,-0.11,0.09,0.07,-0.14,0.27,-0.11,0.03,-0.04,-0.07,0.01,0.22,-0.03,-0.17,-0.11,0,-0.19,0.12,-0.08,0.08,0.15,-0,0.13,0.11,-0,-0.26,-0.05,-0.05,-0.25,0.07,0.19,0.04,0.12,-0.08,-0.03,0.19,0.02,-0.16,0.11,0.01,-0.06,0.04,-0.01,0.07,0.17,-0.12,-0.09,0.33,0.36,-0.11,-0.19,-0.17,0.08,0.03,-0.04,0.09,-0.1,-0.1,-0.13,0.31,0.21,0.11,-0.18,0.13,0.13,0.1,0.05,-0.04,-0.02,-0.2,-0.08,0.07,-0.02,0.03,0.16,-0.01,-0.06,-0.09,0.01,0.2,0.02,-0.01,-0.2,0.07,0.16,-0,0.06,-0.01,0.1,0.13,0.04,0.06,0.03,-0.06,-0.16,-0.12,-0,0.01,0.16,0.08,0.09,0.04,-0.04,0.02,-0.17,0.23,-0.02,-0.05,0.18,-0.17,-0.17,-0.11,-0.1,0,0.03,0.09,0.02,0.1,0.01,0.13,0.23,-0.16,-0.14,-0.13,-0.3,-0.37,0.04,-0.06,0.11,0.02,0.06,0.07,0.21,-0,-0.11,-0.03,-0.14,0.02,-0.01,-0.03,-0.17,0.06,-0.09,0.08,-0.06,0.05,-0.08,-0.2,-0.34,-0.08,0.01,-0.09,-0.22,0.05,0.01,0.06,0.26,0.01,-0.23,-0.05,-0.19,0.03,-0.08,0,-0.02,-0.05,0.08,0.15,0.26,0.12,-0.06,-0.21,0.07,-0.18,0.09,-0.14,-0.07,0,-0.16,0.29,0.08,0.1,0.04,-0.25,-0.03,-0.01,-0.32,-0.17,-0.13,-0.09,-0.3,-0.21,0.08,0.04,0.15,-0.18,0,0.11,-0.14,-0.27,-0.16,0.05,-0.27,-0.04,-0.13,0.04,0.18,0.17,-0.11,-0.15,0.02,0.03,0.13,0.03,-0.13,0.01,-0.19,0.13,0.31,0.1,-0.15,-0.2,0.14,-0.04,0.05,0.12,-0.05,0.03,0.24,0.03,0.36,0.13,0.05,0.1,0.1,0.13,0.1,0.01,0.25,0.04,-0.08,0.13,0.12,-0.02,-0,0.07,0.23,0.01,-0.02,-0.02,-0.1,-0.36,-0.5,-0.13,-0.04,0.05,0.15,-0.09,-0.07,0.01,0.08,0.14,-0.02,-0.16,-0.2,0.08,0.1,0.32,0.45,0.21,-0.21,0.03,0.17,-0.3,-0.21,-0.22,-0.32,0.36,0.31,0.3,0.53,0.14,-0.07,-0.13,-0.11,-0.33,-0.23,-0.19,0.05,0.33,0.09,0.44,0.3,0.13,-0.14,-0.19,-0.45,-0.45,-0.3,0.01,0.59,0.68,0.18,-0.14,0.24,0.16,-0.09,-0.07,-0.27,0.01,-0.07,-0.11,0.3,-0.01,-0.18,-0.07,-0.32,-0.62,-0.17,0.15,-0.02,0.36,-0,0.15,0.19,-0.21,-0.25,-0.31,-0.66,-0.26,-0.09,0.12,0.12,0.48,0.43,0.72,0.8,0.59,0.23,0.13,-0.54,-0.26,-0.06,-0.13,0.27,0.4,0.48,0.49,0.25,0.23,0.15,0.16,-0.17,-0.23,-0.18,0.12,0.11,0.14,-0.11,0.23,0.21,0.36,0.42,0.32,0.01,0.21,-0.04,-0.08,-0.07,-0.1,-0.16,-0.02,-0.08,0.22,0.22,0.18,-0.05,-0.06,0.23,-0.11,-0.3,-0.44,-0.2,-0.49,-0.3,-0.3,-0.05,-0.25,0.02,0.03,0.14,-0.02,0.12,0.09,0.18,0.12,-0,0.02,-0.18,0.1,-0.04,-0.04,0.11,0.27,0.14,0.06,-0.1,0.05,-0.11,0.03,0.26,0.1,0.08,0.24,-0.08,-0.2,0.19,0.23,0.18,0.03,-0.47,-0.2,0.08,-0.06,0.18,0.03,0.05,0.03,-0.04,-0.15,0.07,-0.01,-0.07,-0.26,-0.26,-0.19,-0.01,0.07,0.02,0.01,-0.19,0.02,-0.19,0.01,0.43,0.27,0.05,-0.23,-0.12,-0.24,0.03,-0.02,0.09,-0.39,-0.18,-0.04,0.31,0.2,-0.01,-0.12,-0.15,-0.31,0.15,-0.14,0.21,0.08,-0,0.19,0.39,0.23,0.05,0.29,0,0.11,0.05,-0.23,0.01,0.04,0.22,0.02,0.03,0.29,0.35,0.43,0.4,0.32,0.03,0.11,-0.2,-0.17,0.11,-0.19,-0.3,-0.05,-0.04,0.07,0.24,0.02,-0.18,0.19,-0.01,-0.16,-0.09,-0.26,-0.37,-0.39,-0.13,-0.09,0.12,-0,0.06,0.07,-0.11,-0.13,0,0.09,0.11,-0.1,-0.24,0.16,0.08,0.16,-0.02,-0.16,0.23,0.1,0.27,0.2,-0,0.09,0.17,-0.02,0.04,0.06,-0.15,-0.1,-0.12,0.21,0.26,0.16,0.23,0.15,0.11,-0.06,-0.1,0.1,0.15,-0.2,-0.02,0.16,0.2,0.1,0.23,-0.08,-0.34,-0.31,-0.32,-0.2,-0.13,-0.04,0.23,0.62,0.13,0.18,-0.04,-0.31,-0.24,-0.14,-0.19,-0.17,0.04,0.06,0.5,0.72,0.29,0.62,-0.09,-0.62,0.01,0.02,0.09,0.29,0.09,0.2,0.44,0.38,0.52,0.84,0.23,-0.61,-0.34,0.03,0.27,0.39,-0.04,0.08,0.17,0.37,0.44,0.62,0.25,-0.27,-0.13,0.1,0.2,0.05,0.17,-0.17,0.05,0.17,0.49,0.35,0.05,-0.51,-0.17,-0.28,0.08,0.03,-0.08,-0.02,0.04,0.05,-0.02,0.27,-0.01,-0.55,-0.39,-0.21,-0.32,-0.14,-0.04,-0.08,0.07,-0.06,0.22,0.45,0.34,-0.29,-0.31,-0.07,-0.19,-0.14,0.19,-0.05,-0.16,0.18,0.19,0.29,0.03,-0.01,-0.2,-0.09,-0.21,0.08,0.04,0.21,0.09,0.21,0.39,0.33,0.31,-0.3,-0.01,-0.12,-0.04,-0.05,-0.03,-0.14,0.01,0.19,0.14,0.36,0.12,0.22,0.2,0.03,0.1,0.19,0.14,0.07,0.1,0.05,-0.08,-0.07,-0.06,0.02,0.17,-0.03,-0.04,-0.13,-0.01,0.14,0.04,0.03,-0.3,-0.03,0.02,-0.08,-0.2,0.05,0.03,0.22,-0.07,-0,-0.03,-0.07,-0.27,0.13,-0.01,-0.07,-0.05,0.1,0.13,0,-0.02,0.03,-0.13,-0.17,-0.1,-0.05,-0.16,-0.08,0.06,0.13,0.1,-0.36,-0.17,0.01,-0,-0.02,-0.06,0.03,0.09,0.33,0.01,-0.15,0.15,0.13,-0.23,-0.1,-0.03,0.08,-0.15,-0,0.23,0.17,-0.11,-0.05,0.1,0.06,-0.12,0.27,0.01,-0.1,-0.08,-0.4,-0.12,0.02,0.26,0.01,0.04,0.09,0.01,-0.06,0.2,0.18,0.24,0.11,-0.15,-0.05,-0.05,-0.03,0.08,-0.02,-0.1,0.2,0.2,0.09,-0.02,-0.01,-0.1,-0.11,-0.12,0.04,0.07,0.06,-0.11,0.06,0.28,0.12,0.08,0.47,0.17,0.07,0.16,-0.1,-0.04,0.12,-0.07,-0.15,0.11,0.13,-0.16,-0.05,0.15,0.09,0.05,-0.11,-0.1,-0.05,-0.04,0.03,-0.3,-0.23,-0.05,0.03,-0.08,-0.03,-0.18,-0.21,-0,-0.01,-0.05,-0.07,0.15,0.11,0.21,0.29,-0,0.16,0.29,0.49,0.31,0.09,-0.13,0.16,0.04,0.33,0.17,0.2,0.35,0.29,0.25,0.27,-0.11,0.08,-0.08,0.03,0.25,-0.04,0.23,0.15,0.69,0.45,0.23,0.12,-0.23,-0.21,-0.01,-0.05,-0.19,-0.34,-0.22,0.13,0.5,0.28,0,-0.08,-0.26,-0.13,0.09,0.09,-0.32,-0.17,-0.37,-0.24,0.05,-0.16,0.03,-0.06,-0.54,-0.39,-0.09,-0.11,-0.24,-0.29,-0.35,-0.16,-0.21,0.12,-0.02,-0.37,-0.51,-0.35,-0.11,0.08,-0.27,-0.33,-0.47,-0.51,-0.06,-0.13,-0.13,-0.25,-0.53,-0.42,-0,-0.07,-0.3,-0.37,-0.34,0.02,0.26,0.22,-0.18,0.06,-0.45,-0.22,0.02,0.02,-0.42,-0.38,-0.1,-0.25,0.99,0.47,0.18,-0.06,-0.5,-0.06,0.06,0.22,-0.2,-0.23,-0.16,0.05,0.49,0.49,0.43,0.29,-0.22,0.02,-0.06,0.06,-0.04,-0.18,0.05,0.26,0.4,0.05,0.33,0.52,-0.08,0.07,0.25,-0.11,0.19,0.06,0.25,0.19,0.04,-0,0.3,0.44,0.25,-0.01,0.08,0.08,-0.02,-0.01,-0.39,-0.21,0.15,0.24,-0.25,-0.21,-0.23,-0.23,-0.22,-0.09,-0.04,-0.1,-0.01,-0.04,0.2,0.06,-0.37,-0.38,-0.21,-0.14,-0.1,-0,0.12,0.3,0.08,0.05,-0.27,-0.38,-0.19,-0.35,-0.14,-0,-0.22,-0.19,0.24,0.34,0.24,-0.2,-0.13,-0.24,-0.07,0.17,0.06,0.14,-0.07,0.09,-0.17,0.12,0.58,0.62,0.36,0.71,0.51,0.35,0.1,-0.09,0.16,-0.03,-0.28,0.39,0.51,0.02,-0.05,0.33,0.52,0.16,0.24,-0.07,0.07,-0.01,0.12,0.26,0.19,0.12,0.44,0.48,0.27,0.01,0.57,0.2,-0,-0.06,0.17,0.48,0.36,-0.18,-0.07,0.23,0.4,0.33,0.64,0.33,-0.13,-0.08,0.28,0.58,0.34,-0.11,-0.83,-0.45,0.29,0.66,1.1,0.37,-0.02,0.15,0.38,0.56,0.42,0.31,-0.22,-0.3,0.3,0.24,0.46,0.2,-0.13,-0.01,0.38,0.13,0.3,0.12,-0.12,0.16,0.34,-0.13,0.43,-0.09,0.03,-0.15,-0.05,0.21,-0.09,0.13,0.11,0.21,0.07,-0.02,-0.01,-0.1,-0.12,-0.2,0,-0.05,0,0.09,0.07,-0.12,0.01,0.01,-0.04,-0.27,-0.1,-0.01,0.08,-0.05,-0.17,0.18,0,-0.06,0.05,0.08,0,-0.07,-0.07,0.09,-0.02,0.06,-0.22,-0.05,-0.06,-0.09,-0.26,-0.06,0.2,0.05,-0.07,-0.09,-0.16,0.02,-0.09,-0.05,0.08,0.07,0.04,-0.2,-0.05,0.15,-0.14,0.14,-0.01,0.11,-0.05,-0.15,-0.16,0.12,-0.07,-0.14,0.11,-0.17,-0.02,0.03,0.03,0.04,-0.02,-0.3,-0.02,-0.07,-0.04,0.07,0.11,0.03,0.17,0.25,0.03,-0.05,-0.16,0.05,-0.25,0.15,0.11,-0.04,0.09,-0.11,-0.14,0.08,-0.13,0.02,-0.02,0.16,0.01,0.17,0.09,-0.1,-0.14,-0.25,-0,-0.33,-0.1,-0.29,-0.08,0.05,-0.12,-0.07,-0.08,0.01,-0.19,0.01,-0.02,-0.13,-0.12,0.14,0.07,0.03,-0.1,-0.05,-0.17,-0.22,-0.07,-0.07,-0.15,-0.15,0.03,-0.06,-0.19,0.23,-0.2,0.03,-0.11,0.09,0.01,0.12,-0.02,-0.1,0.16,-0.03,-0.05,-0.05,-0.11,0.02,0.17,0.15,0.03,0.07,0.08,-0.08,0.17,0.01,-0.25,0.05,-0.11,0.05,0.1,-0.02,0.04,0.16,-0.17,-0.23,-0.03,-0.05,0.21,0.1,0.06,-0.02,-0.23,-0.15,-0.03,0.02,-0.06,0.01,0.08,-0.1,-0.06,-0.09,0.15,-0.26,0.05,0.09,-0.24,-0.06,0.12,-0.12,-0.08,-0.02,0.17,0.1,-0.07,-0.16,-0.2,0.04,-0.25,-0.07,0.06,-0.15,-0.05,-0.01,0.11,-0.16,0.01,-0,0.01,-0.17,0.07,-0.11,-0.02,-0.11,0.23,0.03,0.26,-0.1,-0.05,0.15,-0.07,0.07,0.16,-0.04,-0.09,-0.04,0.12,0.1,0.19,-0.04,-0.08,-0.17,-0.06,-0.05,0.01,-0.11,-0.1,-0.05,0.12,0.01,-0.02,0.12,0.13,-0.07,-0.06,-0.2,-0.16,-0.01,0.15,0.21,0.09,-0.03,0.1,-0.16,-0.02,-0.16,-0.02,0.18,0.27,0.02,0.04,-0.2,-0.09,0.18,0.16,0.11,0.05,0.18,-0.03,-0,0.33,-0.11,0.04,-0.05,0.17,-0.05,-0.05,-0.04,0.1,-0.12,-0.17,-0.01,-0.05,0.05,-0.05,-0.08,0.03,0.03,0.09,-0.02,-0.22,0.01,0.02,-0.01,0.06,-0.04,0.12,-0.05,0.15,-0.15,-0.29,-0.13,0.31,-0.07,-0.06,-0,-0.07,0.02,0,0.23,0.12,0.02,0.07,0.04,-0.17,0.09,-0.11,0.07,0.01,0.1,0.16,0.06,-0.07,-0.04,0.04,-0.09,-0.1,-0.07,-0.07,0.05,-0.06,0.01,-0.1,-0.22,0.08,0.1,-0.09,0.05,-0.02,-0.2,0.11,-0.23,-0.01,0.08,-0.14,0.18,-0.08,0.12,-0.05,0.04,-0.07,0.21,0.01,0.11,0.08,0.02,-0.04,0.04,0.1,0.06,0.03,-0.04,0.06,-0.15,-0.04,-0.27,-0.09,-0.02,-0.17,-0.14,0.08,0.01,0.09,0.13,0.07,0.08,0,0.13,-0.19,-0.02,0.12,0.1,-0.02,-0.09,0.06,-0.05,-0.15,0.11,-0.09,-0,-0.19,-0.3,0.05,0.19,-0.29,-0.11,0.01,-0.02,-0.03,-0.05,-0.17,0.09,0.1,0.04,-0.27,0.19,-0.02,0.02,0.18,0.11,-0.05,0.07,0.01,-0.1,0,-0.21,-0.18,0.02,0.16,-0.14,0.13,0,0.19,-0.08,0.3,0.03,-0.03,0.03,-0.21,0.04,-0.04,0.05,-0.04,-0.32,-0.32,-0.1,-0.19,0.08,-0.13,0.05,-0.02,0.19,0.02,0.01,-0.12,0.04,0.04,0.03,0.19,-0.04,0.04,0.08,-0.03,0.15,0.06,-0.08,-0.06,0.01,-0.06,0.01,-0.04,0.2,0.07,0.06,0.11,-0.26,0.03,0.03,0.1,0.03,0.14,0.32,-0.04,-0.01,0.17,0.18,-0.08,0.13,0.14,-0.14,-0.14,-0.01,0.05,0.37,0.26,0.19,-0.1,-0.16,-0.06,0.17,0.25,-0.1,-0.1,-0.36,0.11,-0.13,0.21,0.25,-0.17,-0.12,0.08,0.17,-0.02,-0.08,0.01,0.07,-0.25,-0.14,0.23,0.15,-0.14,-0.03,0.06,0.13,0.09,0.07,-0.25,-0.14,-0.15,-0.06,0.12,0.18,0.07,-0.1,-0.14,0.11,-0.01,0.01,-0.03,-0.17,-0.04,-0.17,0.21,-0.03,0.09,-0.19,-0.07,-0.05,0.09,0.03,-0.11,-0.16,0.18,0,0.08,0.08,-0.09,0.1,0.07,0.12,-0.04,-0.24,0.02,-0.08,-0.12,-0.41,-0.07,0.09,-0.04,0.08,0.1,-0.01,-0.15,0.02,0.03,-0.11,-0.32,-0.21,0.11,0.06,-0.19,-0.01,0.01,0.07,0.05,0.08,-0.08,-0.25,-0.14,0.14,-0.12,0.2,-0.11,-0.13,0.01],b1:[0.37,0.12,-0.03,-0.02,0.06,0.1,-0.2,-0.21,0.31,0.02,0.15,-0.14,-0.01,0.42,-0.03,0.36,0.31,0.33,0.14,-0.08,0.08,0.03,0.83,0.16,0.19,0.05,0.57,-0.23,-0.04,0.04,-0.08,0.05],W2:[-0.8,-0.3,-0.3,0.07,0.94,-0.14,1.23,-0.7,1.15,-1.16,0.71,-0.59,-0.12,-1.4,-0.62,-1.76,0.9,-0.28,1.6,-0.25,0.45,-0.05,-0.03,-0.93,0.81,-0.13,-0.6,0.11,0.19,0.05,0.11,0.22,0.9,-0.39,0.27,0.28,0.26,1.08,-0.54,1.18,-0.08,-0.76,0.11,-0.08,-0.18,0.58,-0.74,-0.09,-1.05,-0.99,-0.83,-0.37,0.41,0.36,0.58,-0.26,1.05,-0.24,2.09,-1.56,-0.6,-0.26,0.12,0.64,-2.15,-0.45,-0.09,0.04,1.77,-1.06,1.26,0.81,-0.59,0.94,0.27,0.15,0.23,0.67,-1.28,0.5,-0.04,-0.22,0.58,-0.15,0.06,0.09,-0.19,-0.84,0.33,-0,1.13,-1.02,0.28,-0.11,-0.08,0.5,-1.09,0.35,0.02,-0.26,-0.01,-0.36,0.08,1.5,-0.99,-0.24,1.44,0.63,0.58,0.98,-0.23,0.74,-0.58,-0.09,-0.14,0.28,0.18,0.64,-0.24,0.6,-1.96,0.46,-0.46,1.06,0.35,0.04,0.33,-0.48,1.28,0.33,-0.05,0.11,-0.21,-0.17,1.35,-0.33,1.07,-0.91,-1.33,-0.55,0.2,-0.38,0.04,-0.42,-0.82,-0.27,-1.05,-0.04,0.17,0.3,1.83,0.03,-1.39,0.31,0.37,0,0.34,-0,-0.64,-0.11,2.11,0.26,0.27,0.04,-1.32,-0.87,-0.93,0.05,-1.36,-0.2,1.4,0.58,-0.74,-1.18,-0.16,0.22,-1.41,1.13,0.54,-0.05,-0.63,0.35,-1.65,0.47,0.36,-0.01,0.7,0.13,0.04,-0.62,0.19,0.01,2.43,-0.08,-0.57,0.42,-0.89,-0.5,-0.37,-0.36,0.84,0.22,-1.3,-0.11,-0.23,-1.72,-0.52,-0.43,0.93,-1.54,0.36,-0.23,0.39,-0.18,-0.64,-0.11,0.38,-0.32,-1.15,0.26,-0.26,-0.12,-0.17,-0.36,-1.48,0.75,0.07,0.04,-0,0.53,-1.27,-1.14,0.09,0.07,0.34,-0.38,-0.33,1.26,0.35,1.05,1.09,1.22,0.21,-0.08,-0.1,-0.42,1.09,0.36,-0.69,-0.43,0.93,-1.96,-0.67,0.18,0.07,0.17,-0.02,0.22,0.08,0.08,-0.43,-0.92,-1.27,0.44,0.72,0.33,-1.13,0.24,0.17,0.77,-0.29,0.09,-0.46,0.55,0.24,0.5,-0.13,0.16,0.64,0.31,0.18,0.38,-0.88,1.73,-0.02,-0.31,0.57,-0.34,-0.42,-0.31,0.29,-0.76,0,-0.64,0.81,0.72,0.34,-0.76,0.91,0.54,0.11,0.16,2.57,-0.63,0.09,0.75,-0.65,0.75,-0.13,-0.66,-1.18,-0.02,0.34,0.18,-0.58,-0.19,0.14,-0.17,0.32,-0.08],b2:[0.01,0.28,-0.33,-0.14,0.04,0.07,-0.22,0.5,-0.03,-0.16]};
+</script>
+<script>
+/* ===== NAV: burger + scrollspy ===== */
+var burger=document.getElementById('burger'),navLinks=document.getElementById('navLinks');
+burger.addEventListener('click',function(){navLinks.classList.toggle('open')});
+navLinks.addEventListener('click',function(){navLinks.classList.remove('open')});
+var secs=document.querySelectorAll('section[id]');
+var spy=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+  document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)});
+}})},{rootMargin:'-40% 0px -55% 0px'});
+secs.forEach(function(s){spy.observe(s)});
+
+/* ===== REVEAL ===== */
+var rv=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');rv.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){rv.observe(el)});
+
+/* ===== SURVEY BARS ===== */
+var bars=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+  e.target.querySelectorAll('.bar i').forEach(function(i){i.style.width=i.getAttribute('data-w')+'%'});
+  bars.unobserve(e.target)}})},{threshold:.3});
+var svPanel=document.querySelectorAll('#survey .panel');
+if(svPanel.length)bars.observe(svPanel[0]);
+
+/* ===== TASKS ===== */
+document.querySelectorAll('.task .tq').forEach(function(tq){tq.addEventListener('click',function(){tq.parentElement.classList.toggle('open')})});
+
+/* ===== DEMO 1: нейросеть распознаёт цифру ===== */
+var cv=document.getElementById('cv'),ctx=cv.getContext('2d',{willReadFrequently:true});
+var S=220;ctx.fillStyle='#0a0f0c';ctx.fillRect(0,0,S,S);
+ctx.strokeStyle='#34d399';ctx.lineWidth=15;ctx.lineCap='round';ctx.lineJoin='round';
+var drawing=false,moved=false;
+function pos(e){var r=cv.getBoundingClientRect();var t=e.touches?e.touches[0]:e;return[(t.clientX-r.left)*S/r.width,(t.clientY-r.top)*S/r.height]}
+function start(e){drawing=true;moved=false;var p=pos(e);ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(p[0]+.1,p[1]+.1);ctx.stroke();e.preventDefault()}
+function move(e){if(!drawing)return;moved=true;var p=pos(e);ctx.lineTo(p[0],p[1]);ctx.stroke();e.preventDefault()}
+function end(){drawing=false}
+cv.addEventListener('mousedown',start);cv.addEventListener('mousemove',move);
+window.addEventListener('mouseup',end);
+cv.addEventListener('touchstart',start,{passive:false});cv.addEventListener('touchmove',move,{passive:false});
+cv.addEventListener('touchend',end);
+document.getElementById('btnClr').addEventListener('click',function(){ctx.fillStyle='#0a0f0c';ctx.fillRect(0,0,S,S);document.getElementById('predHint').innerHTML='Нарисуйте цифру и нажмите «Распознать»';showPred(null)});
+
+/* предобработка: обрезка по контуру, масштаб в 12x12 */
+function getVector(){
+  var img=ctx.getImageData(0,0,S,S).data,v=new Float32Array(S*S),cnt=0;
+  for(var i=0,p=0;i<v.length;i++,p+=4){var r=img[p],g=img[p+1],b=img[p+2];var val=(r+g+b)/3;if(val>55){v[i]=val/255;cnt++}}
+  if(cnt<25)return null;
+  var x0=S,x1=0,y0=S,y1=0;
+  for(var y=0;y<S;y++)for(var x=0;x<S;x++){if(v[y*S+x]>0){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}
+  var w=x1-x0+1,h=y1-y0+1;
+  var out=new Float32Array(144),side=Math.max(w,h),sc=12/side;
+  var acc=new Float32Array(12*12),cw=new Float32Array(12*12);
+  for(var y=0;y<h;y++)for(var x=0;x<w;x++){
+    var val=v[(y0+y)*S+(x0+x)];if(val<=0)continue;
+    /* bbox растягивается на квадрат 12x12, узкая сторона центрируется — как при обучении */
+    var tx=Math.min(11,Math.floor((x+(side-w)/2)*sc)),ty=Math.min(11,Math.floor((y+(side-h)/2)*sc));
+    acc[ty*12+tx]+=val;cw[ty*12+tx]+=1;
+  }
+  for(var i2=0;i2<144;i2++)out[i2]=cw[i2]?Math.min(1,acc[i2]/Math.max(1,cw[i2])):0;
+  /* нормализация яркости: чернила canvas темнее эталонных белых глифов */
+  var mxv=0;for(var i3=0;i3<144;i3++)if(out[i3]>mxv)mxv=out[i3];
+  if(mxv>0)for(var i4=0;i4<144;i4++)out[i4]/=mxv;
+  /* дополнительное сглаживание 3x3, чтобы учесть толщину штриха */
+  var sm=new Float32Array(144);
+  for(var yy=0;yy<12;yy++)for(var xx=0;xx<12;xx++){
+    var s2=0,n2=0;
+    for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){
+      var nx=xx+dx,ny=yy+dy;if(nx<0||nx>11||ny<0||ny>11)continue;
+      var wgt=(dx===0&&dy===0)?3:1;s2+=out[ny*12+nx]*wgt;n2+=wgt;
+    }
+    sm[yy*12+xx]=s2/n2;
+  }
+  return sm;
+}
+function forward(x){
+  var z1=new Float32Array(32),z2=new Float32Array(10),i,j;
+  for(i=0;i<32;i++){var s=NN.b1[i],row=i*144;for(j=0;j<144;j++)s+=NN.W1[row+j]*x[j];z1[i]=s>0?s:0}
+  for(i=0;i<10;i++){var s2=NN.b2[i],row2=i*32;for(j=0;j<32;j++)s2+=NN.W2[row2+j]*z1[j];z2[i]=s2}
+  var mx=Math.max.apply(null,z2),sum=0,p=new Float32Array(10);
+  for(i=0;i<10;i++){p[i]=Math.exp(z2[i]-mx);sum+=p[i]}
+  for(i=0;i<10;i++)p[i]/=sum;
+  return p;
+}
+function showPred(p){
+  document.querySelectorAll('.pred').forEach(function(el){
+    var d=+el.getAttribute('data-d'),i=el.querySelector('.pb i'),lb=el.querySelectorAll('.pl span')[1];
+    el.classList.remove('top');
+    if(!p){i.style.width='0%';lb.textContent='0%';return}
+    var pc=Math.round(p[d]*100);i.style.width=pc+'%';lb.textContent=pc+'%';
+  });
+  if(p){
+    var bi=0;p.forEach(function(v,k){if(v>p[bi])bi=k});
+    var top=document.querySelector('.pred[data-d="'+bi+'"]');if(top)top.classList.add('top');
+  }
+}
+document.getElementById('btnRec').addEventListener('click',function(){
+  var x=getVector(),hint=document.getElementById('predHint');
+  if(!x){hint.textContent='Сначала нарисуйте цифру крупно в центре поля';showPred(null);return}
+  var p=forward(x),bi=0;p.forEach(function(v,k){if(v>p[bi])bi=k});
+  var pc=Math.round(p[bi]*100);
+  hint.innerHTML='Уверен, что это <b>'+bi+'</b> · '+pc+'% уверенности';
+  showPred(p);
+});
+
+/* ===== DEMO 2: «ИИ или человек?» ===== */
+var QUIZ=[
+  {t:'Вчера весь вечер делал алгебру, вообще всё обдумал и в итоге правильно решил только три номера из двенадцати. Не знаю, делать домашку или лечь спать, но вроде как училка завтра собиралась вызывать к доске…',a:'human',w:'Живой тон, обрывочные мысли, «…» и школьные реалии — так пишут в чате класса.'},
+  {t:'Классическая пицца «Маргарита» представляет собой блюдо итальянской кухни, включающее в себя тесто, томатный соус и моцареллу. Благодаря сбалансированному сочетанию ингредиентов она получила широкую популярность во всём мире.',a:'ai',w:'Гладкие шаблонные обороты («представляет собой», «благодаря сбалансированному сочетанию») — типичный стиль сгенерированного текста.'},
+  {t:'дождь идёт по крышам размером в лицо,\nи я стою и думаю, что вот\nвсе люди прячутся, а мне бы\nподставить ладони и пусть',a:'ai',w:'Сгенерированная «поэзия»: красивый образ, но неровный ритм и недосказанность подражают настоящим стихам.'},
+  {t:'короче идёт физик и говорит: достаём двойные листочки. ВСЁ. весь класс одновременно понял, что хорошего настроения сегодня не будет.',a:'human',w:'Разговорная лексика, CapsLock, юмор в стиле школьного мема — человек.'},
+  {t:'Фильм рассказывает историю юного шахматиста, которому предстоит сыграть решающую партию не только на турнире, но и с самим собой. Искренняя драма о таланте, давлении и первой победе. Оценка: 8 из 10.',a:'ai',w:'Сжатая аннотация с ровными фразами и круглой оценкой — так нейросети описывают фильмы в каталогах.'},
+  {t:'Наушники норм, но шнурок короткий какой-то, в кармане куртки запутывается постоянно. За эти деньги можно и лучше найти, если честно.',a:'human',w:'Конкретная бытовая деталь и лёгкая ворчливость — живой отзыв, а не сгенерированный обзор.'}
+];
+var qi=0,qs=0,qLock=false;
+var qText=document.getElementById('qText'),qFb=document.getElementById('qFb'),qStep=document.getElementById('qStep'),
+    qScore=document.getElementById('qScore'),qBar=document.getElementById('qBarFill'),qDone=document.getElementById('qDone');
+function qShow(){
+  qLock=false;qFb.className='qfb';qFb.textContent='';
+  qStep.textContent='Фрагмент '+(qi+1)+' / '+QUIZ.length;
+  qScore.textContent='Счёт: '+qs;
+  qBar.style.width=(qi/QUIZ.length*100)+'%';
+  qText.textContent='«'+QUIZ[qi].t+'»';
+}
+function qAnswer(ans){
+  if(qLock)return;qLock=true;
+  var ok=QUIZ[qi].a===ans;if(ok)qs++;
+  qScore.textContent='Счёт: '+qs;
+  qFb.className='qfb '+(ok?'ok':'bad');
+  qFb.innerHTML=(ok?'✅ Верно. ':'❌ Мимо. ')+('<span style="display:block;margin-top:6px;color:var(--mut)">Автор: '+(QUIZ[qi].a==='ai'?'🤖 нейросеть':'✍️ человек')+'. '+QUIZ[qi].w+'</span>');
+  setTimeout(function(){
+    qi++;
+    if(qi<QUIZ.length){qShow()}
+    else{qBar.style.width='100%';qStep.textContent='Готово';qText.textContent='Раунд завершён. ИИ научился имитировать живой текст — но по стилю его всё ещё можно распознать: слишком гладко, слишком обобщённо, без живых деталей.';
+      document.getElementById('qHuman').style.display='none';document.getElementById('qAI').style.display='none';
+      qDone.style.display='block';qDone.textContent='Ваш результат: '+qs+' из '+QUIZ.length;}
+  },1900);
+}
+document.getElementById('qHuman').addEventListener('click',function(){qAnswer('human')});
+document.getElementById('qAI').addEventListener('click',function(){qAnswer('ai')});
+qShow();
+</script>
+</body>
+</html>
